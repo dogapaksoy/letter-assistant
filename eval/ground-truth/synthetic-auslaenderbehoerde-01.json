@@ -1,0 +1,139 @@
+{
+  "synthetic": true,
+  "notice": "SYNTHETIC TEST DATA. Ground truth for a fictional letter written for evaluation only. Not a real document; all personal data is invented.",
+  "id": "synthetic-auslaenderbehoerde-01",
+  "letter_file": "letters/synthetic-auslaenderbehoerde-01.txt",
+  "sender_type": "auslaenderbehoerde",
+  "letter_date": "2026-09-24",
+  "summary_points": [
+    {
+      "en": "The immigration office invites you to an in-person appointment to extend your student residence permit.",
+      "tr": "Yabancılar dairesi, öğrenci oturum izninin uzatılması için seni yüz yüze bir randevuya çağırıyor.",
+      "source_quote": "Zur Bearbeitung Ihres Verlängerungsantrags laden wir Sie zu einem persönlichen Termin ein:"
+    },
+    {
+      "en": "Your current residence permit is valid until 15 November 2026.",
+      "tr": "Mevcut oturum iznin 15 Kasım 2026'ya kadar geçerli.",
+      "source_quote": "ist gültig bis zum 15.11.2026"
+    },
+    {
+      "en": "The fee is up to 98.00 euros and must be paid by card at the appointment.",
+      "tr": "Harç en fazla 98,00 euro ve randevuda kartla ödenmesi gerekiyor.",
+      "source_quote": "Die Gebühr für die Verlängerung beträgt bis zu 98,00 Euro und ist beim Termin per Girocard zu entrichten."
+    },
+    {
+      "en": "If the extension was applied for before the permit expires, the current permit continues to apply until a decision is made; a Fiktionsbescheinigung can be issued on request.",
+      "tr": "Uzatma başvurusu izin bitmeden yapıldıysa, karar verilene kadar mevcut izin geçerli sayılır; istenirse Fiktionsbescheinigung düzenlenebilir.",
+      "source_quote": "Wurde die Verlängerung vor Ablauf Ihres Aufenthaltstitels beantragt, gilt dieser bis zur Entscheidung als fortbestehend (§ 81 Abs. 4 AufenthG)."
+    }
+  ],
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "appointment",
+      "date": "2026-10-28",
+      "time": "09:30",
+      "description": {
+        "en": "Appointment at the immigration office: Rathausplatz 1, Building B, Room 2.14.",
+        "tr": "Yabancılar dairesinde randevu: Rathausplatz 1, B Binası, 2.14 numaralı oda."
+      },
+      "source_quote": "Termin: Mittwoch, 28.10.2026, 09:30 Uhr"
+    },
+    {
+      "id": "d2",
+      "kind": "relative",
+      "date": null,
+      "rule": "At least three Werktage before the appointment on 2026-10-28.",
+      "expected_behavior": "flag_uncertain",
+      "uncertainty_reason": "'Werktage' may or may not include Saturday, so the last possible day is ambiguous (2026-10-23 or 2026-10-24). The app should show the rule, not present a single computed date as certain.",
+      "description": {
+        "en": "Cancel the appointment by email if you cannot attend.",
+        "tr": "Randevuya gidemeyeceksen e-postayla iptal et."
+      },
+      "source_quote": "sagen Sie ihn bitte spätestens drei Werktage vorher per E-Mail an auslaenderbehoerde@musterstadt.example ab."
+    },
+    {
+      "id": "d3",
+      "kind": "expiry",
+      "date": "2026-11-15",
+      "description": {
+        "en": "Your current residence permit expires.",
+        "tr": "Mevcut oturum izninin süresi doluyor."
+      },
+      "source_quote": "ist gültig bis zum 15.11.2026"
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "type": "required",
+      "description": {
+        "en": "Attend the appointment on 28 October 2026 at 09:30.",
+        "tr": "28 Ekim 2026 saat 09:30'daki randevuya git."
+      },
+      "related_deadline": "d1",
+      "source_quote": "Termin: Mittwoch, 28.10.2026, 09:30 Uhr"
+    },
+    {
+      "id": "a2",
+      "type": "required",
+      "description": {
+        "en": "Bring the listed documents in original.",
+        "tr": "Listelenen belgelerin asıllarını yanında getir."
+      },
+      "items": [
+        { "en": "Valid passport", "tr": "Geçerli pasaport", "source_quote": "1. gültiger Reisepass" },
+        { "en": "Current biometric passport photo (max. 6 months old)", "tr": "Güncel biyometrik vesikalık fotoğraf (en fazla 6 aylık)", "source_quote": "2. aktuelles biometrisches Passfoto (nicht älter als 6 Monate)" },
+        { "en": "Enrolment certificate for winter semester 2026/27", "tr": "2026/27 kış dönemi öğrenci belgesi", "source_quote": "3. Immatrikulationsbescheinigung für das Wintersemester 2026/27" },
+        { "en": "Proof of sufficient health insurance", "tr": "Yeterli sağlık sigortası belgesi", "source_quote": "4. Nachweis über ausreichenden Krankenversicherungsschutz" },
+        { "en": "Proof of financing for at least 12 months (e.g. blocked account, formal obligation, scholarship)", "tr": "En az 12 aylık finansman belgesi (ör. bloke hesap, taahhütname, burs belgesi)", "source_quote": "5. Finanzierungsnachweis (z. B. Sperrkonto, Verpflichtungserklärung oder Stipendienbescheinigung) für mindestens 12 Monate" },
+        { "en": "Current rental contract", "tr": "Güncel kira sözleşmesi", "source_quote": "6. aktueller Mietvertrag" },
+        { "en": "Study progress certificate or transcript from the university", "tr": "Üniversiteden öğrenim durum belgesi veya not dökümü", "source_quote": "7. Studienverlaufsbescheinigung bzw. Leistungsübersicht der Hochschule" }
+      ],
+      "related_deadline": "d1",
+      "source_quote": "Bitte bringen Sie folgende Unterlagen im Original mit:"
+    },
+    {
+      "id": "a3",
+      "type": "required",
+      "description": {
+        "en": "Be ready to pay a fee of up to 98.00 euros by card at the appointment.",
+        "tr": "Randevuda en fazla 98,00 euro harcı kartla ödemeye hazır ol."
+      },
+      "related_deadline": "d1",
+      "source_quote": "Die Gebühr für die Verlängerung beträgt bis zu 98,00 Euro und ist beim Termin per Girocard zu entrichten."
+    },
+    {
+      "id": "a4",
+      "type": "conditional",
+      "condition": {
+        "en": "If you cannot attend the appointment",
+        "tr": "Randevuya gidemeyeceksen"
+      },
+      "description": {
+        "en": "Cancel by email at least three working days before; a new appointment will be sent by letter.",
+        "tr": "En az üç iş günü önce e-postayla iptal et; yeni randevu yazılı olarak bildirilecek."
+      },
+      "related_deadline": "d2",
+      "source_quote": "sagen Sie ihn bitte spätestens drei Werktage vorher per E-Mail an auslaenderbehoerde@musterstadt.example ab."
+    },
+    {
+      "id": "a5",
+      "type": "optional",
+      "description": {
+        "en": "Ask for a Fiktionsbescheinigung (a certificate that your current permit continues to apply).",
+        "tr": "Fiktionsbescheinigung (mevcut iznin geçerli olmaya devam ettiğini gösteren belge) iste."
+      },
+      "related_deadline": null,
+      "source_quote": "Auf Wunsch stellen wir Ihnen hierüber eine Fiktionsbescheinigung aus."
+    }
+  ],
+  "non_deadline_dates": [
+    {
+      "date": "2026-09-24",
+      "reason": "Letter date.",
+      "source_quote": "Datum: 24.09.2026"
+    }
+  ],
+  "eval_notes": "Tests an ambiguous relative deadline (Werktage) that must be flagged rather than computed with false certainty, the document list as a single checklist action, and that the permit expiry date is surfaced."
+}

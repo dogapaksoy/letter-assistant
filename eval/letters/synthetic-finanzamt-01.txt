@@ -1,0 +1,42 @@
+---
+synthetic: true
+notice: SYNTHETIC TEST LETTER. Fictional content written for evaluation only. Not a real document. All names, numbers and addresses are invented.
+---
+Finanzamt Musterstadt
+Steuerstraße 5
+12345 Musterstadt
+
+Frau
+Ayşe Deneme
+Lindenallee 21
+12345 Musterstadt
+
+Steuernummer: 000/000/00000
+Datum: 21.09.2026
+
+Bescheid für 2025 über Einkommensteuer und Solidaritätszuschlag
+
+Festsetzung
+Einkommensteuer: 3.204,00 Euro
+Solidaritätszuschlag: 0,00 Euro
+abzüglich einbehaltene Lohnsteuer: 2.792,00 Euro
+Nachzahlung: 412,00 Euro
+
+Abrechnung
+Bitte zahlen Sie den Betrag von 412,00 Euro spätestens am 26.10.2026. Geben Sie bei der Überweisung bitte Ihre Steuernummer an.
+
+Vorauszahlungen
+Die Vorauszahlungen zur Einkommensteuer werden auf vierteljährlich 103,00 Euro festgesetzt. Die erste Vorauszahlung ist am 10.12.2026 fällig, danach jeweils am 10.03., 10.06., 10.09. und 10.12. eines Jahres.
+
+Erläuterungen
+Statt der beantragten Aufwendungen für ein häusliches Arbeitszimmer wurde die Tagespauschale für 210 Tage (1.260 Euro) berücksichtigt, da das Arbeitszimmer nicht den Mittelpunkt Ihrer gesamten beruflichen Tätigkeit bildet.
+
+Wird die Steuer nicht bis zum Ablauf des Fälligkeitstages entrichtet, ist für jeden angefangenen Monat der Säumnis ein Säumniszuschlag von 1 Prozent des rückständigen Betrags zu entrichten (§ 240 AO).
+
+Rechtsbehelfsbelehrung
+Dieser Bescheid kann mit dem Einspruch angefochten werden. Der Einspruch ist beim oben bezeichneten Finanzamt schriftlich einzureichen, diesem elektronisch zu übermitteln oder dort zur Niederschrift zu erklären. Die Frist für die Einlegung des Einspruchs beträgt einen Monat. Sie beginnt mit Ablauf des Tages, an dem Ihnen dieser Bescheid bekannt gegeben worden ist. Bei Zusendung durch einfachen Brief gilt die Bekanntgabe mit dem vierten Tag nach Aufgabe zur Post als bewirkt, es sei denn, dass der Bescheid zu einem späteren Zeitpunkt zugegangen ist.
+
+Bitte beachten Sie: Durch die Einlegung eines Einspruchs wird die Zahlungspflicht nicht aufgehoben.
+
+Mit freundlichen Grüßen
+Ihr Finanzamt Musterstadt

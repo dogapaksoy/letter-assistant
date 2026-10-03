@@ -1,0 +1,41 @@
+---
+synthetic: true
+notice: SYNTHETIC TEST LETTER. Fictional content written for evaluation only. Not a real document. All names, numbers and addresses are invented.
+---
+ARD ZDF Deutschlandradio
+Beitragsservice
+50656 Köln
+
+Frau
+Elif Beispiel
+Musterweg 12
+12345 Musterstadt
+
+Beitragsnummer: 000 000 000
+Datum: 22.09.2026
+
+Zahlungsaufforderung
+
+Sehr geehrte Frau Beispiel,
+
+für Ihre Wohnung ist seit dem 01.06.2026 ein Rundfunkbeitrag zu zahlen. Leider konnten wir für den Zeitraum Juni 2026 bis August 2026 keinen Zahlungseingang feststellen.
+
+Offener Betrag: 55,08 Euro
+(3 Monate zu je 18,36 Euro)
+
+Bitte überweisen Sie den offenen Betrag bis zum 20.10.2026 auf das unten genannte Konto. Geben Sie als Verwendungszweck unbedingt Ihre Beitragsnummer an, damit wir Ihre Zahlung zuordnen können.
+
+Sollte der Betrag nicht fristgerecht eingehen, werden wir die rückständigen Beiträge durch Bescheid festsetzen. Dabei wird ein Säumniszuschlag in Höhe von 8,00 Euro erhoben.
+
+Haben Sie den Betrag bereits gezahlt, betrachten Sie dieses Schreiben bitte als gegenstandslos.
+
+Wenn Sie BAföG oder Bürgergeld beziehen, können Sie eine Befreiung von der Rundfunkbeitragspflicht beantragen. Das Antragsformular finden Sie unter www.rundfunkbeitrag.de. Bitte fügen Sie eine Kopie Ihres aktuellen Leistungsbescheids bei.
+
+Möchten Sie den Beitrag künftig bequem per Lastschrift zahlen, können Sie uns online ein SEPA-Lastschriftmandat erteilen.
+
+Mit freundlichen Grüßen
+Ihr Beitragsservice
+
+Bankverbindung: Musterbank
+IBAN: DE00 0000 0000 0000 0000 00
+BIC: MUSTDEXXXXX

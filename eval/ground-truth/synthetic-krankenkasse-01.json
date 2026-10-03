@@ -1,0 +1,104 @@
+{
+  "synthetic": true,
+  "notice": "SYNTHETIC TEST DATA. Ground truth for a fictional letter written for evaluation only. Not a real document; all personal data is invented. 'Muster BKK' is a fictional insurer.",
+  "id": "synthetic-krankenkasse-01",
+  "letter_file": "letters/synthetic-krankenkasse-01.txt",
+  "sender_type": "krankenkasse",
+  "letter_date": "2026-09-25",
+  "summary_points": [
+    {
+      "en": "Your health insurer has not received your enrolment for winter semester 2026/27 and needs a current enrolment certificate.",
+      "tr": "Sağlık sigortan 2026/27 kış dönemi kaydını almamış ve güncel bir öğrenci belgesi istiyor.",
+      "source_quote": "Für das Wintersemester 2026/27 liegt uns jedoch noch keine Meldung vor."
+    },
+    {
+      "en": "Without proof, your student insurance may end on 30 September 2026 and you would continue as a voluntary member, which is usually much more expensive.",
+      "tr": "Belge gönderilmezse öğrenci sigortan 30 Eylül 2026'da bitebilir ve gönüllü üye olarak devam edersin; bu genellikle çok daha pahalıdır.",
+      "source_quote": "Der Beitrag für die freiwillige Versicherung ist in der Regel deutlich höher als der Studentenbeitrag."
+    },
+    {
+      "en": "There are 142.65 euros of unpaid contributions for August 2026.",
+      "tr": "Ağustos 2026 için 142,65 euro ödenmemiş prim borcu var.",
+      "source_quote": "Außerdem besteht für den Monat August 2026 ein Beitragsrückstand von 142,65 Euro."
+    }
+  ],
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "due_date",
+      "date": "2026-10-31",
+      "description": {
+        "en": "Submit a current enrolment certificate.",
+        "tr": "Güncel öğrenci belgesini gönder."
+      },
+      "source_quote": "Bitte reichen Sie uns bis spätestens 31.10.2026 eine aktuelle Immatrikulationsbescheinigung ein."
+    },
+    {
+      "id": "d2",
+      "kind": "relative",
+      "date": null,
+      "rule": "Within 14 days after receiving the letter.",
+      "expected_behavior": "flag_uncertain",
+      "uncertainty_reason": "Depends on the date the letter was received, which the app does not know. The app may suggest a date only if the user enters the receipt date, and must label it as an estimate.",
+      "description": {
+        "en": "Pay the outstanding 142.65 euros.",
+        "tr": "Ödenmemiş 142,65 euroyu öde."
+      },
+      "source_quote": "Bitte überweisen Sie diesen Betrag innerhalb von 14 Tagen nach Erhalt dieses Schreibens."
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "type": "required",
+      "description": {
+        "en": "Send a current enrolment certificate by 31 October 2026, via the insurer's app or by post.",
+        "tr": "31 Ekim 2026'ya kadar güncel öğrenci belgesini sigortanın uygulamasından ya da posta ile gönder."
+      },
+      "related_deadline": "d1",
+      "source_quote": "Sie können diese über die Muster BKK App hochladen oder per Post an die oben genannte Adresse senden."
+    },
+    {
+      "id": "a2",
+      "type": "required",
+      "description": {
+        "en": "Transfer the 142.65 euros of unpaid contributions within 14 days of receiving the letter.",
+        "tr": "Mektubu aldıktan sonraki 14 gün içinde 142,65 euro prim borcunu havale et."
+      },
+      "related_deadline": "d2",
+      "source_quote": "Bitte überweisen Sie diesen Betrag innerhalb von 14 Tagen nach Erhalt dieses Schreibens."
+    },
+    {
+      "id": "a3",
+      "type": "conditional",
+      "condition": {
+        "en": "If you have finished or interrupted your studies",
+        "tr": "Öğrenimini bitirdiysen veya ara verdiysen"
+      },
+      "description": {
+        "en": "Inform the insurer immediately.",
+        "tr": "Sigortana hemen bildir."
+      },
+      "related_deadline": null,
+      "source_quote": "Wenn Sie Ihr Studium beendet oder unterbrochen haben, teilen Sie uns dies bitte umgehend mit."
+    }
+  ],
+  "non_deadline_dates": [
+    {
+      "date": "2026-09-25",
+      "reason": "Letter date.",
+      "source_quote": "Datum: 25.09.2026"
+    },
+    {
+      "date": "2026-09-30",
+      "reason": "Possible end of student insurance (a consequence, not a deadline for the user).",
+      "source_quote": "zum 30.09.2026 endet"
+    },
+    {
+      "date": "2026-10-01",
+      "reason": "Possible start of voluntary insurance (a consequence, not a deadline for the user).",
+      "source_quote": "ab dem 01.10.2026 als freiwilliges Mitglied weiterversichert"
+    }
+  ],
+  "eval_notes": "Tests distractor dates (30.09 and 01.10 are consequences, not deadlines) and a relative deadline based on the receipt date. The payment and the enrolment certificate are two separate actions."
+}

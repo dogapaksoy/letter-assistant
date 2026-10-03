@@ -1,0 +1,118 @@
+{
+  "synthetic": true,
+  "notice": "SYNTHETIC TEST DATA. Ground truth for a fictional letter written for evaluation only. Not a real document; all personal data is invented.",
+  "id": "synthetic-jobcenter-01",
+  "letter_file": "letters/synthetic-jobcenter-01.txt",
+  "sender_type": "jobcenter",
+  "letter_date": "2026-09-28",
+  "summary_points": [
+    {
+      "en": "The Jobcenter invites you to an appointment to talk about your job situation and update your cooperation plan.",
+      "tr": "Jobcenter, iş durumunu konuşmak ve iş birliği planını güncellemek için seni bir randevuya çağırıyor.",
+      "source_quote": "Ich möchte mit Ihnen über Ihre aktuelle berufliche Situation sprechen und Ihren Kooperationsplan aktualisieren."
+    },
+    {
+      "en": "You must also submit bank statements for July to September 2026 before the appointment.",
+      "tr": "Randevudan önce Temmuz–Eylül 2026 dönemine ait banka hesap dökümlerini de göndermen gerekiyor.",
+      "source_quote": "Bitte reichen Sie außerdem bis zum 09.10.2026 die Kontoauszüge aller Ihrer Konten für die Monate Juli bis September 2026 ein."
+    },
+    {
+      "en": "If you miss the appointment without an important reason, your Bürgergeld will be reduced by 10 percent of the standard rate for one month.",
+      "tr": "Randevuya önemli bir sebep olmadan gitmezsen Bürgergeld'in bir ay boyunca standart tutarın yüzde 10'u kadar azaltılır.",
+      "source_quote": "wird Ihr Bürgergeld für die Dauer eines Monats um 10 Prozent des maßgebenden Regelbedarfs gemindert (§ 32 SGB II)."
+    }
+  ],
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "due_date",
+      "date": "2026-10-09",
+      "description": {
+        "en": "Submit bank statements of all your accounts for July to September 2026.",
+        "tr": "Tüm hesaplarının Temmuz–Eylül 2026 banka dökümlerini gönder."
+      },
+      "source_quote": "Bitte reichen Sie außerdem bis zum 09.10.2026 die Kontoauszüge aller Ihrer Konten für die Monate Juli bis September 2026 ein."
+    },
+    {
+      "id": "d2",
+      "kind": "appointment",
+      "date": "2026-10-14",
+      "time": "10:00",
+      "description": {
+        "en": "Appointment at Jobcenter Musterstadt, Arbeitsweg 10, Room 0.08.",
+        "tr": "Jobcenter Musterstadt'ta randevu: Arbeitsweg 10, 0.08 numaralı oda."
+      },
+      "source_quote": "bitte kommen Sie am Mittwoch, 14.10.2026, um 10:00 Uhr in das Jobcenter Musterstadt, Arbeitsweg 10, Raum 0.08."
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "type": "required",
+      "description": {
+        "en": "Submit bank statements for July to September 2026 by 9 October 2026, via jobcenter.digital or the letterbox. You may black out recipients and payment references of expenses, but not the amounts.",
+        "tr": "9 Ekim 2026'ya kadar Temmuz–Eylül 2026 banka dökümlerini jobcenter.digital üzerinden veya posta kutusuna bırakarak gönder. Harcamalarda alıcıyı ve açıklamayı karartabilirsin, tutarları karartamazsın."
+      },
+      "related_deadline": "d1",
+      "source_quote": "Sie können die Unterlagen über jobcenter.digital hochladen oder in den Hausbriefkasten einwerfen."
+    },
+    {
+      "id": "a2",
+      "type": "required",
+      "description": {
+        "en": "Attend the appointment on 14 October 2026 at 10:00.",
+        "tr": "14 Ekim 2026 saat 10:00'daki randevuya git."
+      },
+      "related_deadline": "d2",
+      "source_quote": "bitte kommen Sie am Mittwoch, 14.10.2026, um 10:00 Uhr in das Jobcenter Musterstadt, Arbeitsweg 10, Raum 0.08."
+    },
+    {
+      "id": "a3",
+      "type": "required",
+      "description": {
+        "en": "Bring the listed documents to the appointment.",
+        "tr": "Listelenen belgeleri randevuya getir."
+      },
+      "items": [
+        { "en": "This invitation", "tr": "Bu davet mektubu", "source_quote": "- diese Einladung" },
+        { "en": "ID card or passport", "tr": "Kimlik kartı veya pasaport", "source_quote": "- Ihren Personalausweis oder Reisepass" },
+        { "en": "Current CV", "tr": "Güncel özgeçmiş", "source_quote": "- Ihren aktuellen Lebenslauf" },
+        { "en": "Proof of job applications since the last appointment", "tr": "Son randevudan bu yana yaptığın iş başvurularının kanıtları", "source_quote": "- Nachweise über Ihre Bewerbungsbemühungen seit dem letzten Termin" }
+      ],
+      "related_deadline": "d2",
+      "source_quote": "Bitte bringen Sie mit:"
+    },
+    {
+      "id": "a4",
+      "type": "conditional",
+      "condition": {
+        "en": "If you cannot attend for an important reason",
+        "tr": "Önemli bir sebeple randevuya gidemeyeceksen"
+      },
+      "description": {
+        "en": "Tell the Jobcenter before the appointment; if you are ill, provide a doctor's certificate.",
+        "tr": "Randevudan önce Jobcenter'a haber ver; hastaysan doktor raporu sun."
+      },
+      "related_deadline": "d2",
+      "source_quote": "Können Sie den Termin aus einem wichtigen Grund nicht wahrnehmen, teilen Sie mir dies bitte vorher mit."
+    },
+    {
+      "id": "a5",
+      "type": "optional",
+      "description": {
+        "en": "Apply for reimbursement of travel costs.",
+        "tr": "Yol masraflarının geri ödenmesi için başvur."
+      },
+      "related_deadline": null,
+      "source_quote": "Fahrkosten für die Anreise können auf Antrag erstattet werden."
+    }
+  ],
+  "non_deadline_dates": [
+    {
+      "date": "2026-09-28",
+      "reason": "Letter date.",
+      "source_quote": "Datum: 28.09.2026"
+    }
+  ],
+  "eval_notes": "Tests ordering (the document deadline on 09.10 comes before the appointment on 14.10), that the sanction is surfaced clearly, and that the rule on what may be blacked out on statements is kept."
+}

@@ -1,0 +1,115 @@
+{
+  "synthetic": true,
+  "notice": "SYNTHETIC TEST DATA. Ground truth for a fictional letter written for evaluation only. Not a real document; all personal data is invented.",
+  "id": "synthetic-finanzamt-01",
+  "letter_file": "letters/synthetic-finanzamt-01.txt",
+  "sender_type": "finanzamt",
+  "letter_date": "2026-09-21",
+  "summary_points": [
+    {
+      "en": "This is your 2025 income tax assessment. You owe an additional 412.00 euros.",
+      "tr": "Bu, 2025 yılı gelir vergisi tahakkuk kararın. 412,00 euro ek ödeme yapman gerekiyor.",
+      "source_quote": "Nachzahlung: 412,00 Euro"
+    },
+    {
+      "en": "From now on you must make quarterly income tax prepayments of 103.00 euros.",
+      "tr": "Bundan sonra üç ayda bir 103,00 euro gelir vergisi peşin ödemesi yapman gerekiyor.",
+      "source_quote": "Die Vorauszahlungen zur Einkommensteuer werden auf vierteljährlich 103,00 Euro festgesetzt."
+    },
+    {
+      "en": "The home office costs you claimed were not accepted; the daily flat rate for 210 days (1,260 euros) was used instead.",
+      "tr": "Beyan ettiğin çalışma odası giderleri kabul edilmedi; onun yerine 210 gün için günlük götürü tutar (1.260 euro) dikkate alındı.",
+      "source_quote": "Statt der beantragten Aufwendungen für ein häusliches Arbeitszimmer wurde die Tagespauschale für 210 Tage (1.260 Euro) berücksichtigt"
+    },
+    {
+      "en": "Late payment costs 1 percent of the unpaid amount for every started month.",
+      "tr": "Geç ödemede, ödenmeyen tutarın başlayan her ay için yüzde 1'i gecikme zammı olarak alınır.",
+      "source_quote": "ist für jeden angefangenen Monat der Säumnis ein Säumniszuschlag von 1 Prozent des rückständigen Betrags zu entrichten (§ 240 AO)."
+    },
+    {
+      "en": "Filing an objection does not cancel the obligation to pay.",
+      "tr": "İtiraz etmek ödeme yükümlülüğünü ortadan kaldırmaz.",
+      "source_quote": "Durch die Einlegung eines Einspruchs wird die Zahlungspflicht nicht aufgehoben."
+    }
+  ],
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "due_date",
+      "date": "2026-10-26",
+      "description": {
+        "en": "Pay the additional tax of 412.00 euros.",
+        "tr": "412,00 euro ek vergiyi öde."
+      },
+      "source_quote": "Bitte zahlen Sie den Betrag von 412,00 Euro spätestens am 26.10.2026."
+    },
+    {
+      "id": "d2",
+      "kind": "recurring",
+      "date": "2026-12-10",
+      "recurrence": "Quarterly on 10 March, 10 June, 10 September and 10 December.",
+      "description": {
+        "en": "First quarterly tax prepayment of 103.00 euros.",
+        "tr": "103,00 euroluk ilk üç aylık vergi peşin ödemesi."
+      },
+      "source_quote": "Die erste Vorauszahlung ist am 10.12.2026 fällig, danach jeweils am 10.03., 10.06., 10.09. und 10.12. eines Jahres."
+    },
+    {
+      "id": "d3",
+      "kind": "relative",
+      "date": null,
+      "rule": "One month, starting at the end of the day the notice is deemed delivered (by simple letter: the fourth day after posting, unless it arrived later).",
+      "expected_behavior": "flag_uncertain",
+      "uncertainty_reason": "The posting date is not stated in the letter and the deadline depends on actual delivery. The app must show the rule and must not present a single computed date as certain.",
+      "description": {
+        "en": "Deadline to file an objection (Einspruch) if you disagree with the assessment.",
+        "tr": "Karara katılmıyorsan itiraz (Einspruch) için son tarih."
+      },
+      "source_quote": "Die Frist für die Einlegung des Einspruchs beträgt einen Monat."
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "type": "required",
+      "description": {
+        "en": "Pay 412.00 euros by 26 October 2026 and include your tax number (Steuernummer) as reference.",
+        "tr": "26 Ekim 2026'ya kadar 412,00 euro öde ve açıklamaya vergi numaranı (Steuernummer) yaz."
+      },
+      "related_deadline": "d1",
+      "source_quote": "Geben Sie bei der Überweisung bitte Ihre Steuernummer an."
+    },
+    {
+      "id": "a2",
+      "type": "required",
+      "description": {
+        "en": "Pay 103.00 euros every quarter, starting on 10 December 2026.",
+        "tr": "10 Aralık 2026'dan başlayarak her üç ayda bir 103,00 euro öde."
+      },
+      "related_deadline": "d2",
+      "source_quote": "Die erste Vorauszahlung ist am 10.12.2026 fällig, danach jeweils am 10.03., 10.06., 10.09. und 10.12. eines Jahres."
+    },
+    {
+      "id": "a3",
+      "type": "conditional",
+      "condition": {
+        "en": "If you disagree with the assessment",
+        "tr": "Karara katılmıyorsan"
+      },
+      "description": {
+        "en": "File an objection with the tax office in writing, electronically or in person within one month; you still have to pay meanwhile.",
+        "tr": "Bir ay içinde vergi dairesine yazılı, elektronik olarak veya şahsen itiraz et; bu arada ödeme yapman yine de gerekiyor."
+      },
+      "related_deadline": "d3",
+      "source_quote": "Dieser Bescheid kann mit dem Einspruch angefochten werden."
+    }
+  ],
+  "non_deadline_dates": [
+    {
+      "date": "2026-09-21",
+      "reason": "Letter date.",
+      "source_quote": "Datum: 21.09.2026"
+    }
+  ],
+  "eval_notes": "Tests three deadline types in one letter: a fixed due date, a recurring prepayment schedule, and a relative objection deadline that depends on delivery and must be flagged as uncertain. Also checks that the app does not suggest the objection pauses payment."
+}

@@ -1,0 +1,43 @@
+---
+synthetic: true
+notice: SYNTHETIC TEST LETTER. Fictional content written for evaluation only. Not a real document. All names, numbers and addresses are invented.
+---
+Jobcenter Musterstadt
+Arbeitsweg 10
+12345 Musterstadt
+
+Frau
+Zeynep Yılmaz-Deneme
+Kastanienweg 4
+12345 Musterstadt
+
+BG-Nummer: 00000BG0000000
+Datum: 28.09.2026
+
+Einladung
+
+Sehr geehrte Frau Yılmaz-Deneme,
+
+bitte kommen Sie am Mittwoch, 14.10.2026, um 10:00 Uhr in das Jobcenter Musterstadt, Arbeitsweg 10, Raum 0.08.
+
+Ich möchte mit Ihnen über Ihre aktuelle berufliche Situation sprechen und Ihren Kooperationsplan aktualisieren.
+
+Bitte bringen Sie mit:
+- diese Einladung
+- Ihren Personalausweis oder Reisepass
+- Ihren aktuellen Lebenslauf
+- Nachweise über Ihre Bewerbungsbemühungen seit dem letzten Termin
+
+Bitte reichen Sie außerdem bis zum 09.10.2026 die Kontoauszüge aller Ihrer Konten für die Monate Juli bis September 2026 ein. Sie können die Unterlagen über jobcenter.digital hochladen oder in den Hausbriefkasten einwerfen. Auf den Kontoauszügen dürfen Sie bei Ausgaben den Empfänger und den Verwendungszweck schwärzen, nicht jedoch die Beträge.
+
+Können Sie den Termin aus einem wichtigen Grund nicht wahrnehmen, teilen Sie mir dies bitte vorher mit. Bei Arbeitsunfähigkeit legen Sie bitte eine ärztliche Bescheinigung vor.
+
+Rechtsfolgenbelehrung
+Wenn Sie ohne wichtigen Grund dieser Einladung nicht nachkommen, wird Ihr Bürgergeld für die Dauer eines Monats um 10 Prozent des maßgebenden Regelbedarfs gemindert (§ 32 SGB II).
+
+Fahrkosten für die Anreise können auf Antrag erstattet werden.
+
+Mit freundlichen Grüßen
+Im Auftrag
+T. Beispiel
+Arbeitsvermittlung

@@ -1,0 +1,35 @@
+---
+synthetic: true
+notice: SYNTHETIC TEST LETTER. Fictional content written for evaluation only. Not a real document. All names, numbers and addresses are invented. "Muster BKK" is a fictional health insurer.
+---
+Muster BKK
+Postfach 00 00 00
+12345 Musterstadt
+
+Herrn
+Can Örnekoğlu
+Studentenwohnheim Am Campus, Zimmer 112
+Campusweg 3
+12345 Musterstadt
+
+Versichertennummer: X000000000
+Datum: 25.09.2026
+
+Ihre studentische Krankenversicherung - Nachweis für das Wintersemester 2026/27
+
+Sehr geehrter Herr Örnekoğlu,
+
+Sie sind bei uns als Student pflichtversichert. Voraussetzung dafür ist, dass Sie an einer staatlichen oder staatlich anerkannten Hochschule eingeschrieben sind. Ihre Hochschule meldet uns die Einschreibung normalerweise elektronisch. Für das Wintersemester 2026/27 liegt uns jedoch noch keine Meldung vor.
+
+Bitte reichen Sie uns bis spätestens 31.10.2026 eine aktuelle Immatrikulationsbescheinigung ein. Sie können diese über die Muster BKK App hochladen oder per Post an die oben genannte Adresse senden.
+
+Liegt uns bis zu diesem Datum kein Nachweis vor, müssen wir prüfen, ob Ihre studentische Krankenversicherung zum 30.09.2026 endet. In diesem Fall würden Sie ab dem 01.10.2026 als freiwilliges Mitglied weiterversichert. Der Beitrag für die freiwillige Versicherung ist in der Regel deutlich höher als der Studentenbeitrag.
+
+Außerdem besteht für den Monat August 2026 ein Beitragsrückstand von 142,65 Euro. Bitte überweisen Sie diesen Betrag innerhalb von 14 Tagen nach Erhalt dieses Schreibens. Für rückständige Beiträge erheben wir Säumniszuschläge nach § 24 SGB IV.
+
+Wenn Sie Ihr Studium beendet oder unterbrochen haben, teilen Sie uns dies bitte umgehend mit.
+
+Haben Sie Fragen? Sie erreichen uns unter 0000 000000 (Mo-Fr, 8-18 Uhr).
+
+Mit freundlichen Grüßen
+Ihre Muster BKK

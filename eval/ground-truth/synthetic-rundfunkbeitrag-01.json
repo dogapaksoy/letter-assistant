@@ -1,0 +1,100 @@
+{
+  "synthetic": true,
+  "notice": "SYNTHETIC TEST DATA. Ground truth for a fictional letter written for evaluation only. Not a real document; all personal data is invented.",
+  "id": "synthetic-rundfunkbeitrag-01",
+  "letter_file": "letters/synthetic-rundfunkbeitrag-01.txt",
+  "sender_type": "rundfunkbeitrag",
+  "letter_date": "2026-09-22",
+  "summary_points": [
+    {
+      "en": "The broadcasting fee (Rundfunkbeitrag) for June to August 2026 has not been paid; 55.08 euros are outstanding.",
+      "tr": "Haziran–Ağustos 2026 dönemine ait yayın katkı payı (Rundfunkbeitrag) ödenmemiş; 55,08 euro borç var.",
+      "source_quote": "Offener Betrag: 55,08 Euro"
+    },
+    {
+      "en": "If the amount is not paid on time, it will be set by official notice and an 8.00 euro late fee will be added.",
+      "tr": "Tutar zamanında ödenmezse resmi bir kararla tahakkuk ettirilecek ve 8,00 euro gecikme zammı eklenecek.",
+      "source_quote": "Dabei wird ein Säumniszuschlag in Höhe von 8,00 Euro erhoben."
+    },
+    {
+      "en": "People receiving BAföG or Bürgergeld can apply for an exemption.",
+      "tr": "BAföG veya Bürgergeld alanlar muafiyet başvurusu yapabilir.",
+      "source_quote": "Wenn Sie BAföG oder Bürgergeld beziehen, können Sie eine Befreiung von der Rundfunkbeitragspflicht beantragen."
+    }
+  ],
+  "deadlines": [
+    {
+      "id": "d1",
+      "kind": "due_date",
+      "date": "2026-10-20",
+      "description": {
+        "en": "Pay the outstanding 55.08 euros.",
+        "tr": "Ödenmemiş 55,08 euroyu öde."
+      },
+      "source_quote": "Bitte überweisen Sie den offenen Betrag bis zum 20.10.2026 auf das unten genannte Konto."
+    }
+  ],
+  "actions": [
+    {
+      "id": "a1",
+      "type": "required",
+      "description": {
+        "en": "Transfer 55.08 euros to the account in the letter, with your contribution number (Beitragsnummer) as the payment reference.",
+        "tr": "Mektuptaki hesaba 55,08 euro havale et; açıklama kısmına katkı numaranı (Beitragsnummer) yaz."
+      },
+      "related_deadline": "d1",
+      "source_quote": "Geben Sie als Verwendungszweck unbedingt Ihre Beitragsnummer an, damit wir Ihre Zahlung zuordnen können."
+    },
+    {
+      "id": "a2",
+      "type": "conditional",
+      "condition": {
+        "en": "If you have already paid",
+        "tr": "Zaten ödediysen"
+      },
+      "description": {
+        "en": "Nothing else to do; the letter can be ignored.",
+        "tr": "Başka bir şey yapmana gerek yok; mektubu dikkate almayabilirsin."
+      },
+      "related_deadline": null,
+      "source_quote": "Haben Sie den Betrag bereits gezahlt, betrachten Sie dieses Schreiben bitte als gegenstandslos."
+    },
+    {
+      "id": "a3",
+      "type": "conditional",
+      "condition": {
+        "en": "If you receive BAföG or Bürgergeld",
+        "tr": "BAföG veya Bürgergeld alıyorsan"
+      },
+      "description": {
+        "en": "Apply for an exemption using the form on rundfunkbeitrag.de and attach a copy of your current benefit notice.",
+        "tr": "rundfunkbeitrag.de'deki formla muafiyet başvurusu yap ve güncel yardım kararının bir kopyasını ekle."
+      },
+      "related_deadline": null,
+      "source_quote": "Bitte fügen Sie eine Kopie Ihres aktuellen Leistungsbescheids bei."
+    },
+    {
+      "id": "a4",
+      "type": "optional",
+      "description": {
+        "en": "Set up a SEPA direct debit online for future payments.",
+        "tr": "Sonraki ödemeler için internetten SEPA otomatik ödeme talimatı ver."
+      },
+      "related_deadline": null,
+      "source_quote": "können Sie uns online ein SEPA-Lastschriftmandat erteilen."
+    }
+  ],
+  "non_deadline_dates": [
+    {
+      "date": "2026-09-22",
+      "reason": "Letter date.",
+      "source_quote": "Datum: 22.09.2026"
+    },
+    {
+      "date": "2026-06-01",
+      "reason": "Start of the fee obligation; in the past, not a deadline.",
+      "source_quote": "seit dem 01.06.2026"
+    }
+  ],
+  "eval_notes": "Simple case with one clear due date. Checks that the 8.00 euro late fee is mentioned and that the conditional actions (already paid / exemption) are not presented as mandatory."
+}

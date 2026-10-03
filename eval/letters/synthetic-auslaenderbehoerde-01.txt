@@ -1,0 +1,44 @@
+---
+synthetic: true
+notice: SYNTHETIC TEST LETTER. Fictional content written for evaluation only. Not a real document. All names, numbers and addresses are invented.
+---
+Stadt Musterstadt
+Bürgeramt - Ausländerbehörde
+Rathausplatz 1
+12345 Musterstadt
+
+Herrn
+Mehmet Örnek
+Beispielstraße 7, App. 3
+12345 Musterstadt
+
+Aktenzeichen: AB-2026-000000
+Datum: 24.09.2026
+
+Einladung zur Vorsprache - Verlängerung Ihrer Aufenthaltserlaubnis
+
+Sehr geehrter Herr Örnek,
+
+Ihre Aufenthaltserlaubnis zum Zweck des Studiums (§ 16b AufenthG) ist gültig bis zum 15.11.2026. Zur Bearbeitung Ihres Verlängerungsantrags laden wir Sie zu einem persönlichen Termin ein:
+
+Termin: Mittwoch, 28.10.2026, 09:30 Uhr
+Ort: Rathausplatz 1, Gebäude B, Zimmer 2.14
+
+Bitte bringen Sie folgende Unterlagen im Original mit:
+1. gültiger Reisepass
+2. aktuelles biometrisches Passfoto (nicht älter als 6 Monate)
+3. Immatrikulationsbescheinigung für das Wintersemester 2026/27
+4. Nachweis über ausreichenden Krankenversicherungsschutz
+5. Finanzierungsnachweis (z. B. Sperrkonto, Verpflichtungserklärung oder Stipendienbescheinigung) für mindestens 12 Monate
+6. aktueller Mietvertrag
+7. Studienverlaufsbescheinigung bzw. Leistungsübersicht der Hochschule
+
+Die Gebühr für die Verlängerung beträgt bis zu 98,00 Euro und ist beim Termin per Girocard zu entrichten.
+
+Können Sie den Termin nicht wahrnehmen, sagen Sie ihn bitte spätestens drei Werktage vorher per E-Mail an auslaenderbehoerde@musterstadt.example ab. Einen neuen Termin teilen wir Ihnen dann schriftlich mit.
+
+Bitte beachten Sie: Fehlende Unterlagen können zu Verzögerungen bei der Bearbeitung führen. Wurde die Verlängerung vor Ablauf Ihres Aufenthaltstitels beantragt, gilt dieser bis zur Entscheidung als fortbestehend (§ 81 Abs. 4 AufenthG). Auf Wunsch stellen wir Ihnen hierüber eine Fiktionsbescheinigung aus.
+
+Mit freundlichen Grüßen
+Im Auftrag
+S. Muster
