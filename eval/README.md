@@ -17,15 +17,15 @@ The synthetic letters are clean text. They do not test OCR noise. Once an OCR pr
 
 ## Ground-truth format
 
-| Field | Meaning |
-|---|---|
-| `synthetic` | `true` for invented letters, `false` for real anonymized ones |
-| `id`, `letter_file`, `sender_type`, `letter_date` | identification |
-| `summary_points[]` | key points (`en`, `tr`, `source_quote`) |
-| `deadlines[]` | `id`, `kind`, `date` (ISO or `null`), optional `time`, `description`, `source_quote` |
-| `actions[]` | `id`, `type` (`required` / `conditional` / `optional`), optional `condition`, `description`, optional `items[]`, `related_deadline`, `source_quote` |
-| `non_deadline_dates[]` | dates in the letter that are **not** deadlines; used to measure false positives |
-| `eval_notes` | what the letter is designed to test |
+| Field                                             | Meaning                                                                                                                                             |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `synthetic`                                       | `true` for invented letters, `false` for real anonymized ones                                                                                       |
+| `id`, `letter_file`, `sender_type`, `letter_date` | identification                                                                                                                                      |
+| `summary_points[]`                                | key points (`en`, `tr`, `source_quote`)                                                                                                             |
+| `deadlines[]`                                     | `id`, `kind`, `date` (ISO or `null`), optional `time`, `description`, `source_quote`                                                                |
+| `actions[]`                                       | `id`, `type` (`required` / `conditional` / `optional`), optional `condition`, `description`, optional `items[]`, `related_deadline`, `source_quote` |
+| `non_deadline_dates[]`                            | dates in the letter that are **not** deadlines; used to measure false positives                                                                     |
+| `eval_notes`                                      | what the letter is designed to test                                                                                                                 |
 
 Deadline `kind` values:
 

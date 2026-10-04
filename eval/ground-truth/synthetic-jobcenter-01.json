@@ -75,9 +75,21 @@
       },
       "items": [
         { "en": "This invitation", "tr": "Bu davet mektubu", "source_quote": "- diese Einladung" },
-        { "en": "ID card or passport", "tr": "Kimlik kartı veya pasaport", "source_quote": "- Ihren Personalausweis oder Reisepass" },
-        { "en": "Current CV", "tr": "Güncel özgeçmiş", "source_quote": "- Ihren aktuellen Lebenslauf" },
-        { "en": "Proof of job applications since the last appointment", "tr": "Son randevudan bu yana yaptığın iş başvurularının kanıtları", "source_quote": "- Nachweise über Ihre Bewerbungsbemühungen seit dem letzten Termin" }
+        {
+          "en": "ID card or passport",
+          "tr": "Kimlik kartı veya pasaport",
+          "source_quote": "- Ihren Personalausweis oder Reisepass"
+        },
+        {
+          "en": "Current CV",
+          "tr": "Güncel özgeçmiş",
+          "source_quote": "- Ihren aktuellen Lebenslauf"
+        },
+        {
+          "en": "Proof of job applications since the last appointment",
+          "tr": "Son randevudan bu yana yaptığın iş başvurularının kanıtları",
+          "source_quote": "- Nachweise über Ihre Bewerbungsbemühungen seit dem letzten Termin"
+        }
       ],
       "related_deadline": "d2",
       "source_quote": "Bitte bringen Sie mit:"

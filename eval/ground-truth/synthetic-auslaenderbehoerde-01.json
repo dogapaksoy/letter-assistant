@@ -82,13 +82,41 @@
         "tr": "Listelenen belgelerin asıllarını yanında getir."
       },
       "items": [
-        { "en": "Valid passport", "tr": "Geçerli pasaport", "source_quote": "1. gültiger Reisepass" },
-        { "en": "Current biometric passport photo (max. 6 months old)", "tr": "Güncel biyometrik vesikalık fotoğraf (en fazla 6 aylık)", "source_quote": "2. aktuelles biometrisches Passfoto (nicht älter als 6 Monate)" },
-        { "en": "Enrolment certificate for winter semester 2026/27", "tr": "2026/27 kış dönemi öğrenci belgesi", "source_quote": "3. Immatrikulationsbescheinigung für das Wintersemester 2026/27" },
-        { "en": "Proof of sufficient health insurance", "tr": "Yeterli sağlık sigortası belgesi", "source_quote": "4. Nachweis über ausreichenden Krankenversicherungsschutz" },
-        { "en": "Proof of financing for at least 12 months (e.g. blocked account, formal obligation, scholarship)", "tr": "En az 12 aylık finansman belgesi (ör. bloke hesap, taahhütname, burs belgesi)", "source_quote": "5. Finanzierungsnachweis (z. B. Sperrkonto, Verpflichtungserklärung oder Stipendienbescheinigung) für mindestens 12 Monate" },
-        { "en": "Current rental contract", "tr": "Güncel kira sözleşmesi", "source_quote": "6. aktueller Mietvertrag" },
-        { "en": "Study progress certificate or transcript from the university", "tr": "Üniversiteden öğrenim durum belgesi veya not dökümü", "source_quote": "7. Studienverlaufsbescheinigung bzw. Leistungsübersicht der Hochschule" }
+        {
+          "en": "Valid passport",
+          "tr": "Geçerli pasaport",
+          "source_quote": "1. gültiger Reisepass"
+        },
+        {
+          "en": "Current biometric passport photo (max. 6 months old)",
+          "tr": "Güncel biyometrik vesikalık fotoğraf (en fazla 6 aylık)",
+          "source_quote": "2. aktuelles biometrisches Passfoto (nicht älter als 6 Monate)"
+        },
+        {
+          "en": "Enrolment certificate for winter semester 2026/27",
+          "tr": "2026/27 kış dönemi öğrenci belgesi",
+          "source_quote": "3. Immatrikulationsbescheinigung für das Wintersemester 2026/27"
+        },
+        {
+          "en": "Proof of sufficient health insurance",
+          "tr": "Yeterli sağlık sigortası belgesi",
+          "source_quote": "4. Nachweis über ausreichenden Krankenversicherungsschutz"
+        },
+        {
+          "en": "Proof of financing for at least 12 months (e.g. blocked account, formal obligation, scholarship)",
+          "tr": "En az 12 aylık finansman belgesi (ör. bloke hesap, taahhütname, burs belgesi)",
+          "source_quote": "5. Finanzierungsnachweis (z. B. Sperrkonto, Verpflichtungserklärung oder Stipendienbescheinigung) für mindestens 12 Monate"
+        },
+        {
+          "en": "Current rental contract",
+          "tr": "Güncel kira sözleşmesi",
+          "source_quote": "6. aktueller Mietvertrag"
+        },
+        {
+          "en": "Study progress certificate or transcript from the university",
+          "tr": "Üniversiteden öğrenim durum belgesi veya not dökümü",
+          "source_quote": "7. Studienverlaufsbescheinigung bzw. Leistungsübersicht der Hochschule"
+        }
       ],
       "related_deadline": "d1",
       "source_quote": "Bitte bringen Sie folgende Unterlagen im Original mit:"
