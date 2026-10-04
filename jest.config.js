@@ -2,11 +2,11 @@
 module.exports = {
   projects: [
     {
-      // Pure logic (parsing, verification, adapters): no React Native runtime needed.
-      displayName: 'core',
+      // Non-UI logic (.ts tests: parsing, verification, config): no React Native runtime needed.
+      displayName: 'logic',
       preset: 'jest-expo',
       testEnvironment: 'node',
-      testMatch: ['<rootDir>/src/core/**/*.test.ts'],
+      testMatch: ['<rootDir>/src/**/*.test.ts'],
     },
     {
       displayName: 'app',
