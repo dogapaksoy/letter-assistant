@@ -6,7 +6,7 @@ module.exports = {
       displayName: 'logic',
       preset: 'jest-expo',
       testEnvironment: 'node',
-      testMatch: ['<rootDir>/src/**/*.test.ts'],
+      testMatch: ['<rootDir>/src/**/*.test.ts', '<rootDir>/scripts/**/*.test.ts'],
     },
     {
       displayName: 'app',

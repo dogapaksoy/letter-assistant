@@ -24,7 +24,16 @@ export interface LlmResponse {
   usage?: { inputTokens: number; outputTokens: number };
 }
 
-export type LlmErrorKind = 'timeout' | 'rate_limit' | 'auth' | 'invalid_request' | 'provider';
+export type LlmErrorKind =
+  | 'timeout'
+  | 'rate_limit'
+  | 'auth'
+  | 'invalid_request'
+  /** The model declined the request (e.g. a safety refusal). */
+  | 'refused'
+  /** Output hit the token limit, so it is incomplete. */
+  | 'truncated'
+  | 'provider';
 
 export class LlmError extends Error {
   constructor(

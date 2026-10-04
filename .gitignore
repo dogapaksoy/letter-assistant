@@ -34,6 +34,7 @@ yarn-error.*
 
 # env files (secrets); .env.example is tracked
 .env
+.env.eval
 .env*.local
 
 # typescript
