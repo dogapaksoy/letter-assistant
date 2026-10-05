@@ -1,7 +1,7 @@
 // Runs the extraction pipeline on the eval set and scores it.
-// Usage: npm run eval -- [--lang tr|en] [--only <case-id>]
-// Needs ANTHROPIC_API_KEY (put it in .env.eval). SYNTHETIC letters only until an
-// EU-compliant provider is configured.
+// Usage: npm run eval -- [--provider mistral|anthropic] [--lang tr|en] [--only <case-id>]
+// API keys go in .env.eval (see .env.eval.example). SYNTHETIC letters only: real letters
+// are refused unless --allow-real-data is passed for an EU, no-training configuration.
 
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -10,6 +10,8 @@ import { parseArgs } from 'node:util';
 import { extractFromLetter, type ExtractionOutcome } from '../../src/core/extraction/pipeline';
 import type { OutputLanguage } from '../../src/core/extraction/prompt';
 import { createAnthropicProvider } from '../../src/core/llm/anthropic';
+import { createMistralProvider } from '../../src/core/llm/mistral';
+import type { LlmProvider } from '../../src/core/llm/types';
 import { type EvalCase, loadEvalCases } from './ground-truth';
 import { type JudgeMatch, judgeMatches } from './judge';
 import {
@@ -32,7 +34,12 @@ interface CaseResult {
 }
 
 const { values } = parseArgs({
-  options: { lang: { type: 'string', default: 'en' }, only: { type: 'string' } },
+  options: {
+    provider: { type: 'string' },
+    lang: { type: 'string', default: 'en' },
+    only: { type: 'string' },
+    'allow-real-data': { type: 'boolean', default: false },
+  },
 });
 const language = values.lang as OutputLanguage;
 if (language !== 'en' && language !== 'tr') {
@@ -48,21 +55,37 @@ if (cases.length === 0) {
   console.error('No eval cases found.');
   process.exit(1);
 }
-const realCases = cases.filter((c) => !c.truth.synthetic);
-if (realCases.length > 0) {
-  console.warn(
-    `WARNING: ${realCases.length} non-synthetic letter(s) will be sent to the configured LLM provider.`,
-  );
-}
 
-if (!process.env.ANTHROPIC_API_KEY?.trim()) {
+const realCases = cases.filter((c) => !c.truth.synthetic);
+if (realCases.length > 0 && !values['allow-real-data']) {
   console.error(
-    'ANTHROPIC_API_KEY is not set. Copy .env.eval.example to .env.eval and put your key there.',
+    `Refusing to send ${realCases.length} non-synthetic letter(s) to an LLM provider.\n` +
+      'Use --only to pick synthetic cases, or pass --allow-real-data ONLY with a paid, EU, ' +
+      'no-training provider configuration (CLAUDE.md privacy rules).',
   );
   process.exit(1);
 }
 
-const provider = createAnthropicProvider();
+const KEY_VARS = { mistral: 'MISTRAL_API_KEY', anthropic: 'ANTHROPIC_API_KEY' } as const;
+type ProviderName = keyof typeof KEY_VARS;
+const hasKey = (name: ProviderName) => Boolean(process.env[KEY_VARS[name]]?.trim());
+
+const providerName = (values.provider ??
+  (['mistral', 'anthropic'] as const).find(hasKey) ??
+  'mistral') as ProviderName;
+if (!(providerName in KEY_VARS)) {
+  console.error('--provider must be "mistral" or "anthropic"');
+  process.exit(1);
+}
+if (!hasKey(providerName)) {
+  console.error(
+    `${KEY_VARS[providerName]} is not set. Copy .env.eval.example to .env.eval and put your key there.`,
+  );
+  process.exit(1);
+}
+
+const provider: LlmProvider =
+  providerName === 'mistral' ? createMistralProvider() : createAnthropicProvider();
 
 async function runCase(c: EvalCase): Promise<CaseResult> {
   const outcome = await extractFromLetter({ provider, letterText: c.letterText, language });
