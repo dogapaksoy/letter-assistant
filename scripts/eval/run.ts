@@ -1,5 +1,5 @@
 // Runs the extraction pipeline on the eval set and scores it.
-// Usage: npm run eval -- [--provider mistral|anthropic] [--lang tr|en] [--only <case-id>]
+// Usage: npm run eval -- [--provider gemini|mistral|anthropic] [--lang tr|en] [--only <case-id>]
 // API keys go in .env.eval (see .env.eval.example). SYNTHETIC letters only: real letters
 // are refused unless --allow-real-data is passed for an EU, no-training configuration.
 
@@ -10,6 +10,7 @@ import { parseArgs } from 'node:util';
 import { extractFromLetter, type ExtractionOutcome } from '../../src/core/extraction/pipeline';
 import type { OutputLanguage } from '../../src/core/extraction/prompt';
 import { createAnthropicProvider } from '../../src/core/llm/anthropic';
+import { createGeminiProvider } from '../../src/core/llm/gemini';
 import { createMistralProvider } from '../../src/core/llm/mistral';
 import type { LlmProvider } from '../../src/core/llm/types';
 import { type EvalCase, loadEvalCases } from './ground-truth';
@@ -66,15 +67,19 @@ if (realCases.length > 0 && !values['allow-real-data']) {
   process.exit(1);
 }
 
-const KEY_VARS = { mistral: 'MISTRAL_API_KEY', anthropic: 'ANTHROPIC_API_KEY' } as const;
+const KEY_VARS = {
+  gemini: 'GEMINI_API_KEY',
+  mistral: 'MISTRAL_API_KEY',
+  anthropic: 'ANTHROPIC_API_KEY',
+} as const;
 type ProviderName = keyof typeof KEY_VARS;
 const hasKey = (name: ProviderName) => Boolean(process.env[KEY_VARS[name]]?.trim());
 
 const providerName = (values.provider ??
-  (['mistral', 'anthropic'] as const).find(hasKey) ??
-  'mistral') as ProviderName;
+  (Object.keys(KEY_VARS) as ProviderName[]).find(hasKey) ??
+  'gemini') as ProviderName;
 if (!(providerName in KEY_VARS)) {
-  console.error('--provider must be "mistral" or "anthropic"');
+  console.error('--provider must be "gemini", "mistral" or "anthropic"');
   process.exit(1);
 }
 if (!hasKey(providerName)) {
@@ -84,8 +89,12 @@ if (!hasKey(providerName)) {
   process.exit(1);
 }
 
-const provider: LlmProvider =
-  providerName === 'mistral' ? createMistralProvider() : createAnthropicProvider();
+const PROVIDERS: Record<ProviderName, () => LlmProvider> = {
+  gemini: createGeminiProvider,
+  mistral: createMistralProvider,
+  anthropic: createAnthropicProvider,
+};
+const provider = PROVIDERS[providerName]();
 
 async function runCase(c: EvalCase): Promise<CaseResult> {
   const outcome = await extractFromLetter({ provider, letterText: c.letterText, language });
