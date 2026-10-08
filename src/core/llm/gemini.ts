@@ -11,7 +11,7 @@ export interface GeminiProviderOptions {
   /** Defaults to a client created from GEMINI_API_KEY. Injected in tests. */
   client?: GeminiClient;
   apiKey?: string;
-  /** Defaults to GEMINI_MODEL, then gemini-2.5-flash. */
+  /** Defaults to GEMINI_MODEL, then gemini-3.5-flash (a pinned version keeps eval runs comparable). */
   model?: string;
 }
 
@@ -30,7 +30,7 @@ const REFUSAL_REASONS = new Set([
  * the eval runner refuses real letters by default.
  */
 export function createGeminiProvider(options: GeminiProviderOptions = {}): LlmProvider {
-  const model = options.model ?? (process.env.GEMINI_MODEL?.trim() || 'gemini-2.5-flash');
+  const model = options.model ?? (process.env.GEMINI_MODEL?.trim() || 'gemini-3.5-flash');
   let client: Promise<GeminiClient> | undefined = options.client
     ? Promise.resolve(options.client)
     : undefined;

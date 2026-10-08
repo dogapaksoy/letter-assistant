@@ -19,6 +19,8 @@ export type ExtractionOutcome =
   | {
       ok: false;
       error: 'invalid_json' | 'invalid_shape' | `llm_${LlmError['kind']}`;
+      /** LlmError message (status codes only, never letter content), for diagnosis. */
+      detail?: string;
       promptVersion: string;
     };
 
@@ -40,8 +42,10 @@ export async function extractFromLetter(params: {
       maxOutputTokens: params.maxOutputTokens ?? 16000,
     });
   } catch (error) {
-    const kind = error instanceof LlmError ? error.kind : 'provider';
-    return { ok: false, error: `llm_${kind}`, promptVersion };
+    if (error instanceof LlmError) {
+      return { ok: false, error: `llm_${error.kind}`, detail: error.message, promptVersion };
+    }
+    return { ok: false, error: 'llm_provider', promptVersion };
   }
 
   const parsed = parseExtraction(response.text);

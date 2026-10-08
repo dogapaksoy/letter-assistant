@@ -15,6 +15,7 @@ import { createMistralProvider } from '../../src/core/llm/mistral';
 import type { LlmProvider } from '../../src/core/llm/types';
 import { type EvalCase, loadEvalCases } from './ground-truth';
 import { type JudgeMatch, judgeMatches } from './judge';
+import { withPacing } from './paced';
 import {
   type DeadlineScore,
   type MatchScore,
@@ -94,7 +95,13 @@ const PROVIDERS: Record<ProviderName, () => LlmProvider> = {
   mistral: createMistralProvider,
   anthropic: createAnthropicProvider,
 };
-const provider = PROVIDERS[providerName]();
+// Free tiers (gemini, mistral) allow only a few requests per minute.
+const provider = withPacing(PROVIDERS[providerName](), {
+  minIntervalMs: providerName === 'anthropic' ? 0 : 12_000,
+  retryDelaysMs: [20_000, 40_000, 60_000, 60_000],
+  onRetry: (attempt, delayMs, error) =>
+    process.stdout.write(`[${error.message}; retry ${attempt} in ${delayMs / 1000}s] `),
+});
 
 async function runCase(c: EvalCase): Promise<CaseResult> {
   const outcome = await extractFromLetter({ provider, letterText: c.letterText, language });
@@ -221,7 +228,7 @@ async function main() {
         ? r.judgeError
           ? `ok (judge failed: ${r.judgeError})`
           : 'ok'
-        : `FAILED (${r.outcome.error})`,
+        : `FAILED (${r.outcome.error}${r.outcome.detail ? `: ${r.outcome.detail}` : ''})`,
     );
   }
 
