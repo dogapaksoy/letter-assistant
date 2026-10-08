@@ -25,7 +25,9 @@ const judgeOutputSchema = z.object({
 
 const SYSTEM = `You grade an information-extraction system against a hand-written answer key.
 
-You get EXPECTED items (from the answer key) and PREDICTED items (from the system). For each expected item, decide which predicted item, if any, states the same thing. Wording and language may differ; the meaning must match, including any concrete amount, date, document or condition. A predicted item may match at most one expected item. If nothing matches, use null. Be strict: a vaguer or partly wrong item is not a match.
+You get EXPECTED items (from the answer key) and PREDICTED items (from the system). For each expected item, decide which predicted item, if any, states the same thing. Wording and language may differ; the meaning must match: the same thing to do, and any amount, document, method, condition or rule (such as "within 14 days of receipt") the expected item names. A predicted item may match at most one expected item. If nothing matches, use null.
+
+Calendar dates are scored separately, so do not reject a predicted item only because it omits a calendar date that the expected item mentions. Do reject it if it states a different date, amount or rule. Do not reject an item for leaving out a minor detail that does not change what the reader must do. A vaguer item that loses the essential what, how much or under which condition is not a match.
 
 Return ONLY JSON: {"matches": [{"expected_id": string, "predicted_index": number | null, "reason": string}]} with exactly one entry per expected item. Keep each reason under 20 words.`;
 

@@ -56,6 +56,31 @@ describe('scoreDatedDeadlines', () => {
     ]);
     expect(score).toMatchObject({ datedFound: 1, wrongDates: 0 });
   });
+
+  it('accepts later dates of an expected recurring schedule, but only for recurring items', () => {
+    const recurringTruth = {
+      deadlines: [
+        {
+          id: 'd1',
+          kind: 'recurring' as const,
+          date: '2026-12-10',
+          description: { en: '', tr: '' },
+          source_quote: '',
+        },
+      ],
+      non_deadline_dates: [],
+    };
+    const score = scoreDatedDeadlines(recurringTruth, [
+      { kind: 'due_date', date: '2026-12-10' },
+      { kind: 'recurring', date: '2027-03-10' },
+      { kind: 'due_date', date: '2027-01-15' },
+    ]);
+    expect(score).toMatchObject({ datedFound: 1, wrongDates: 1, unexpectedDates: ['2027-01-15'] });
+
+    expect(scoreDatedDeadlines(truth, [{ kind: 'recurring', date: '2027-03-10' }])).toMatchObject({
+      wrongDates: 1,
+    });
+  });
 });
 
 describe('scoreMatches', () => {

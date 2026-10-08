@@ -121,7 +121,7 @@ async function runCase(c: EvalCase): Promise<CaseResult> {
     const predictedRelative = extraction.deadlines.filter((d) => d.kind === 'relative');
     const relativeMatches = await judgeMatches(
       provider,
-      expectedRelative.map((d) => ({ id: d.id, text: d.description[language] })),
+      expectedRelative.map((d) => ({ id: d.id, text: relativeText(d) })),
       predictedRelative.map((d) => d.value),
     );
     result.relative = {
@@ -160,6 +160,11 @@ async function runCase(c: EvalCase): Promise<CaseResult> {
   return result;
 }
 
+/** Relative deadlines are judged on the rule the letter states, not just the task. */
+function relativeText(d: { description: Record<OutputLanguage, string>; rule?: string }): string {
+  return d.rule ? `${d.description[language]} Rule: ${d.rule}` : d.description[language];
+}
+
 function sum(results: CaseResult[], pick: (r: CaseResult) => number | undefined): number {
   return results.reduce((total, r) => total + (pick(r) ?? 0), 0);
 }
@@ -183,7 +188,7 @@ function reviewMarkdown(results: CaseResult[]): string {
           r.relative?.matches,
           c.truth.deadlines
             .filter((d) => d.kind === 'relative')
-            .map((d) => ({ id: d.id, text: d.description[language] })),
+            .map((d) => ({ id: d.id, text: relativeText(d) })),
           extraction.deadlines.filter((d) => d.kind === 'relative').map((d) => d.value),
         ],
         [

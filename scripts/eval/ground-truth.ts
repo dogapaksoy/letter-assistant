@@ -14,6 +14,8 @@ const groundTruthSchema = z.object({
       id: z.string(),
       kind: z.enum(['due_date', 'appointment', 'expiry', 'recurring', 'relative']),
       date: z.string().nullable(),
+      /** For relative deadlines: the rule the letter states instead of a date. */
+      rule: z.string().optional(),
       description: bilingual,
       source_quote: z.string(),
     }),

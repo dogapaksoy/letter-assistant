@@ -27,8 +27,19 @@ export function scoreDatedDeadlines(
   const distractors = new Set(truth.non_deadline_dates.map((d) => d.date));
   const predictedDates = new Set(predicted.flatMap((d) => (d.date ? [d.date] : [])));
 
+  // A recurring schedule may be returned as "first payment" plus "later payments"; the
+  // later start date is part of the expected schedule, not a wrong date.
+  const truthHasRecurring = truth.deadlines.some((d) => d.kind === 'recurring');
+  const laterRecurringDates = new Set(
+    predicted.flatMap((d) =>
+      truthHasRecurring && d.kind === 'recurring' && d.date ? [d.date] : [],
+    ),
+  );
+
   const missingDates = [...expectedDates].filter((date) => !predictedDates.has(date));
-  const unexpectedDates = [...predictedDates].filter((date) => !expectedDates.has(date));
+  const unexpectedDates = [...predictedDates].filter(
+    (date) => !expectedDates.has(date) && !laterRecurringDates.has(date),
+  );
 
   return {
     datedExpected: expectedDates.size,
