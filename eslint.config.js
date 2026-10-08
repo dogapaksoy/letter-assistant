@@ -6,7 +6,7 @@ const prettierConfig = require('eslint-config-prettier/flat');
 module.exports = defineConfig([
   expoConfig,
   {
-    ignores: ['dist/*', '.expo/*', 'coverage/*', 'eval/results/*'],
+    ignores: ['dist/*', '.expo/*', 'coverage/*', 'eval/results/*', 'supabase/functions/**'],
   },
   {
     files: ['**/*.ts', '**/*.tsx'],

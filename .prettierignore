@@ -2,3 +2,5 @@ package-lock.json
 assets/
 coverage/
 eval/results/
+supabase/functions/**/handler.js
+supabase/functions/**/deno.json

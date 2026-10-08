@@ -43,6 +43,7 @@
     "@types/jest": "29.5.14",
     "@types/node": "^24.19.1",
     "@types/react": "~19.2.2",
+    "esbuild": "^0.28.2",
     "eslint": "^9.39.5",
     "eslint-config-expo": "~57.0.2",
     "eslint-config-prettier": "^10.1.8",
@@ -65,7 +66,11 @@
     "test": "jest",
     "supabase:check": "node --env-file-if-exists=.env scripts/check-supabase.mjs",
     "eval": "node --env-file-if-exists=.env.eval --import tsx scripts/eval/run.ts",
-    "test:node": "node --import tsx --test \"src/**/*.node-test.ts\""
+    "test:node": "node --import tsx --test \"src/**/*.node-test.ts\"",
+    "functions:build": "node scripts/build-function.mjs",
+    "functions:check": "npm run -s functions:build && npx -y deno@2 check supabase/functions/extract-letter/index.ts",
+    "functions:dev": "npm run -s functions:build && npx -y deno@2 run --allow-net --allow-env --allow-read --allow-sys --env-file=supabase/functions/.env supabase/functions/extract-letter/index.ts",
+    "functions:deploy": "npm run -s functions:build && npx -y supabase functions deploy extract-letter"
   },
   "private": true
 }
