@@ -14,6 +14,7 @@ module.exports = {
       // Tests must not live in src/app/: Expo Router would treat them as routes.
       testMatch: ['<rootDir>/src/**/*.test.tsx'],
       testPathIgnorePatterns: ['/node_modules/', '<rootDir>/src/app/'],
+      setupFiles: ['<rootDir>/jest.setup.app.js'],
     },
   ],
 };

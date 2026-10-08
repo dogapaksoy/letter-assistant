@@ -55,19 +55,16 @@ const verificationSchema = z.discriminatedUnion('status', [
   }),
 ]);
 
-const withVerification = <S extends z.ZodObject>(schema: S) =>
-  schema.extend({ verification: verificationSchema });
-
 export const extractSuccessSchema = z.object({
   ok: z.literal(true),
   /** The text the LLM saw and quotes were verified against. Kept in memory only. */
   letterText: z.string(),
   textMethod: z.enum(['text', 'pdf-text-layer', 'ocr']),
   extraction: z.object({
-    summary: z.array(withVerification(summaryPointSchema)),
+    summary: z.array(summaryPointSchema.extend({ verification: verificationSchema })),
     // deadlineSchema has a refinement, so extend its shape rather than the refined schema.
     deadlines: z.array(z.object({ ...deadlineSchema.shape, verification: verificationSchema })),
-    actions: z.array(withVerification(actionSchema)),
+    actions: z.array(actionSchema.extend({ verification: verificationSchema })),
   }),
   dropped: z.object({ summary: z.number(), deadlines: z.number(), actions: z.number() }),
   model: z.string(),

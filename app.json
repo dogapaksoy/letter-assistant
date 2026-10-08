@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "letter-assistant",
+    "name": "Letter Assistant",
     "slug": "letter-assistant",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -32,10 +32,24 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Choose a photo of an official letter so the app can explain it.",
+          "cameraPermission": "Take a photo of an official letter so the app can explain it.",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "Add a deadline from your letter to your calendar.",
+          "remindersPermission": false
+        }
       ]
     ],
     "experiments": {
-      "typedRoutes": true,
       "reactCompiler": true
     }
   }
