@@ -1,4 +1,4 @@
-import { parseExtraction } from './parse';
+import { firstJsonObject, parseExtraction } from './parse';
 
 const summaryPoint = {
   value: 'An additional 412 euros are due.',
@@ -125,5 +125,29 @@ describe('parseExtraction', () => {
     );
     expect(result).toMatchObject({ ok: true, extraction: { actions: [action] } });
     if (result.ok) expect(result.extraction.actions[0]).not.toHaveProperty('legal_advice');
+  });
+});
+
+describe('recovering JSON from noisy model output', () => {
+  it('accepts valid JSON followed by an extra closing brace (seen with gemini-3.5-flash)', () => {
+    const result = parseExtraction(JSON.stringify(valid, null, 2) + '\n}');
+    expect(result).toMatchObject({ ok: true, dropped: noneDropped });
+  });
+
+  it('accepts JSON surrounded by prose', () => {
+    const result = parseExtraction(
+      `Here is the result:\n${JSON.stringify(valid)}\nHope this helps.`,
+    );
+    expect(result).toMatchObject({ ok: true, extraction: valid });
+  });
+
+  it('ignores braces inside strings when finding the object', () => {
+    expect(firstJsonObject('x {"a": "} {", "b": "\\"}"} tail }')).toBe('{"a": "} {", "b": "\\"}"}');
+  });
+
+  it('still rejects output without a complete object', () => {
+    expect(firstJsonObject('{"summary": [')).toBeNull();
+    expect(firstJsonObject('no json here')).toBeNull();
+    expect(parseExtraction('{"summary": [}')).toEqual({ ok: false, error: 'invalid_json' });
   });
 });
