@@ -66,7 +66,7 @@ npm run functions:dev            # http://localhost:8000
 One-time setup (project in **Central EU (Frankfurt)**):
 
 ```bash
-npx supabase login
+npx supabase login --no-browser   # prints a link; open it, then paste the code
 npx supabase link --project-ref <your-project-ref>
 npx supabase db push                                   # creates correction_reports
 npx supabase secrets set --env-file supabase/functions/.env
