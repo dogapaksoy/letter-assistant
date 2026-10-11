@@ -4,3 +4,4 @@ coverage/
 eval/results/
 supabase/functions/**/handler.js
 supabase/functions/**/deno.json
+supabase/.temp/
