@@ -37,6 +37,10 @@ Deadline `kind` values:
 
 Every `source_quote` must appear **verbatim** in the letter body (after front matter is stripped). The eval runner should check this before scoring.
 
+## Comparing runs
+
+Only compare runs whose results report the same model (`models` in the results JSON, printed at the end of each run). Model aliases can move silently: requests for `gemini-3.5-flash` were answered by `gemini-3.5-flash` until 2026-10-09 and by `gemini-3.6-flash` on 2026-10-11. For a prompt change, run the old and the new prompt on the same day, with the same model and language.
+
 ## Adding real letters
 
 Real letters must be anonymized **before** they are added to this folder. Replace every:
