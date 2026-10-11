@@ -3,7 +3,7 @@ import { Pressable, Text, TextInput, View } from 'react-native';
 
 import { ERROR_CATEGORIES, type ErrorCategory } from '../lib/corrections';
 import type { StringKey } from '../lib/i18n';
-import { AppButton, Body, Heading, Notice, styles, usePalette } from './ui';
+import { AppButton, Body, Notice, styles, usePalette } from './ui';
 
 /** Lets the user say what is wrong. Only the category is ever sent; the text stays local. */
 export function ReportForm({
@@ -19,7 +19,6 @@ export function ReportForm({
 
   return (
     <View style={{ gap: 16 }}>
-      <Heading>{t('report.title')}</Heading>
       <Notice tone="info">{t('report.intro')}</Notice>
       <View accessibilityRole="radiogroup" style={{ gap: 8 }}>
         {ERROR_CATEGORIES.map((option) => {

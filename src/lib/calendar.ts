@@ -6,10 +6,19 @@ export interface CalendarEventData {
   endDate: Date;
   allDay: boolean;
   notes: string;
+  /** Reminders, in minutes relative to startDate (negative = before). */
+  alarms: { relativeOffset: number }[];
 }
 
+const DAY = 24 * 60;
+/** All-day deadlines: 3 days and 1 day before, at 09:00 (start is midnight). */
+const ALL_DAY_ALARMS = [{ relativeOffset: -3 * DAY + 9 * 60 }, { relativeOffset: -DAY + 9 * 60 }];
+/** Appointments: 1 day and 2 hours before. */
+const TIMED_ALARMS = [{ relativeOffset: -DAY }, { relativeOffset: -120 }];
+
 /**
- * Event for a dated deadline, or null for relative deadlines: those have no date the
+ * Event for a dated deadline, with reminders (a deadline in the calendar is only useful
+ * if it reminds you in time; the user can change them in the system dialog), or null for relative deadlines: those have no date the
  * app can know, and guessing one would present uncertainty as fact.
  */
 export function buildCalendarEvent(
@@ -28,10 +37,11 @@ export function buildCalendarEvent(
       endDate: new Date(startDate.getTime() + 60 * 60 * 1000),
       allDay: false,
       notes,
+      alarms: TIMED_ALARMS,
     };
   }
   const day = new Date(`${deadline.date}T00:00:00`);
-  return { title, startDate: day, endDate: day, allDay: true, notes };
+  return { title, startDate: day, endDate: day, allDay: true, notes, alarms: ALL_DAY_ALARMS };
 }
 
 /** Opens the system "new event" screen. No calendar permission is needed for this. */

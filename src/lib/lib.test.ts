@@ -46,12 +46,15 @@ describe('buildCalendarEvent', () => {
     expect(event?.startDate.getHours()).toBe(9);
     expect(event?.startDate.getMinutes()).toBe(30);
     expect((event!.endDate.getTime() - event!.startDate.getTime()) / 60_000).toBe(60);
+    expect(event?.alarms).toEqual([{ relativeOffset: -1440 }, { relativeOffset: -120 }]);
   });
 
   it('creates an all-day event for due dates', () => {
     const event = buildCalendarEvent({ kind: 'due_date', date: '2026-10-26', value: 'Pay' }, 'n');
     expect(event).toMatchObject({ allDay: true });
     expect(event?.startDate.getDate()).toBe(26);
+    // 3 days and 1 day before, at 09:00.
+    expect(event?.alarms).toEqual([{ relativeOffset: -3780 }, { relativeOffset: -900 }]);
   });
 
   it('never creates an event for relative deadlines', () => {

@@ -2,7 +2,7 @@ import { Text, View } from 'react-native';
 
 import type { QuoteVerification } from '../core/verification/match';
 import type { StringKey } from '../lib/i18n';
-import { Body, Heading, Notice, styles, usePalette } from './ui';
+import { Body, Notice, styles, usePalette } from './ui';
 
 /**
  * Shows the letter text with the item's source passage highlighted. The highlighted
@@ -25,7 +25,6 @@ export function SourceView({
   if (verification.status === 'unverified') {
     return (
       <View style={{ gap: 16 }}>
-        <Heading>{t('source.title')}</Heading>
         <Body>{value}</Body>
         <Notice tone="warning">{t('source.notFound')}</Notice>
         <Text style={[styles.body, { color: palette.text }]}>{letterText}</Text>
@@ -41,7 +40,6 @@ export function SourceView({
 
   return (
     <View style={{ gap: 16 }}>
-      <Heading>{t('source.title')}</Heading>
       <Body>{value}</Body>
       <View
         accessible
