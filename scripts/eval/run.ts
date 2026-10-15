@@ -14,7 +14,7 @@ import { createGeminiProvider } from '../../src/core/llm/gemini';
 import { createMistralProvider } from '../../src/core/llm/mistral';
 import type { LlmProvider } from '../../src/core/llm/types';
 import { type EvalCase, loadEvalCases } from './ground-truth';
-import { type JudgeMatch, judgeMatches } from './judge';
+import { type JudgeMatch, judgeSections } from './judge';
 import { withPacing } from './paced';
 import {
   type DeadlineScore,
@@ -119,11 +119,22 @@ async function runCase(c: EvalCase): Promise<CaseResult> {
   try {
     const expectedRelative = c.truth.deadlines.filter((d) => d.kind === 'relative');
     const predictedRelative = extraction.deadlines.filter((d) => d.kind === 'relative');
-    const relativeMatches = await judgeMatches(
-      provider,
-      expectedRelative.map((d) => ({ id: d.id, text: relativeText(d) })),
-      predictedRelative.map((d) => d.value),
-    );
+    // One judge call per letter (quota): relative deadlines and actions as separate sections.
+    const [relativeMatches = [], actionMatches = []] = await judgeSections(provider, [
+      {
+        name: 'relative_deadlines',
+        expected: expectedRelative.map((d) => ({ id: d.id, text: relativeText(d) })),
+        predicted: predictedRelative.map((d) => d.value),
+      },
+      {
+        name: 'actions',
+        expected: c.truth.actions.map((a) => ({
+          id: a.id,
+          text: (a.condition ? `${a.condition[language]}: ` : '') + a.description[language],
+        })),
+        predicted: extraction.actions.map((a) => (a.condition ? `${a.condition}: ` : '') + a.value),
+      },
+    ]);
     result.relative = {
       ...scoreMatches(
         expectedRelative.map((d) => d.id),
@@ -133,14 +144,6 @@ async function runCase(c: EvalCase): Promise<CaseResult> {
       matches: relativeMatches,
     };
 
-    const actionMatches = await judgeMatches(
-      provider,
-      c.truth.actions.map((a) => ({
-        id: a.id,
-        text: (a.condition ? `${a.condition[language]}: ` : '') + a.description[language],
-      })),
-      extraction.actions.map((a) => (a.condition ? `${a.condition}: ` : '') + a.value),
-    );
     const required = c.truth.actions.filter((a) => a.type === 'required').map((a) => a.id);
     result.actions = {
       ...scoreMatches(
