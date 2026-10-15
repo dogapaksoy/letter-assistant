@@ -132,6 +132,33 @@ describe('extract-letter handler', () => {
     });
   });
 
+  it('rejects rate-limited requests before extracting text or calling the LLM', async () => {
+    const extractor: TextExtractor = {
+      name: 'never',
+      async extract() {
+        throw new Error('must not be called');
+      },
+    };
+    const { handle, provider } = handler({
+      textExtractor: extractor,
+      rateLimiter: { allow: async () => false },
+    });
+    const response = await handle(
+      post({ language: 'en', document: { kind: 'pdf', base64: btoa('%PDF') } }),
+    );
+    expect(response.status).toBe(429);
+    expect(await read(response)).toEqual({ ok: false, error: 'rate_limited' });
+    expect(provider.requests).toHaveLength(0);
+  });
+
+  it('lets requests through when the rate limiter allows them', async () => {
+    const { handle } = handler({ rateLimiter: { allow: async () => true } });
+    const body = await read(
+      await handle(post({ language: 'en', document: { kind: 'text', text: LETTER } })),
+    );
+    expect(body.ok).toBe(true);
+  });
+
   it('refuses to work when the server is not configured', async () => {
     const handle = createRequestHandler(() => null);
     const response = await handle(
@@ -156,16 +183,33 @@ describe('depsFromEnv', () => {
     expect(depsFromEnv({ DEV_MODE_SYNTHETIC_ONLY: 'true', LLM_PROVIDER: 'nope' })).toBeNull();
   });
 
-  it('builds dev and production configurations', () => {
-    expect(
-      depsFromEnv({ DEV_MODE_SYNTHETIC_ONLY: 'true', LLM_PROVIDER: 'gemini', GEMINI_API_KEY: 'k' }),
-    ).toMatchObject({ mode: 'dev-synthetic-only', provider: { name: 'gemini' } });
-    expect(
-      depsFromEnv({
-        LLM_APPROVED_FOR_PERSONAL_DATA: 'true',
-        LLM_PROVIDER: 'mistral',
-        MISTRAL_API_KEY: 'k',
-      }),
-    ).toMatchObject({ mode: 'production', provider: { name: 'mistral' } });
+  const rateLimitEnv = {
+    SUPABASE_URL: 'https://abc.supabase.co',
+    SUPABASE_SERVICE_ROLE_KEY: 'service',
+    RATE_LIMIT_SECRET: 'secret',
+  };
+  const production = {
+    LLM_APPROVED_FOR_PERSONAL_DATA: 'true',
+    LLM_PROVIDER: 'mistral',
+    MISTRAL_API_KEY: 'k',
+  };
+
+  it('builds a dev configuration, with rate limiting only if configured', () => {
+    const dev = { DEV_MODE_SYNTHETIC_ONLY: 'true', LLM_PROVIDER: 'gemini', GEMINI_API_KEY: 'k' };
+    const withoutLimit = depsFromEnv(dev);
+    expect(withoutLimit).toMatchObject({
+      mode: 'dev-synthetic-only',
+      provider: { name: 'gemini' },
+    });
+    expect(withoutLimit?.rateLimiter).toBeUndefined();
+    expect(depsFromEnv({ ...dev, ...rateLimitEnv })?.rateLimiter).toBeDefined();
+  });
+
+  it('requires rate limiting in production', () => {
+    expect(depsFromEnv(production)).toBeNull();
+    expect(depsFromEnv({ ...production, ...rateLimitEnv, RATE_LIMIT_SECRET: '' })).toBeNull();
+    const deps = depsFromEnv({ ...production, ...rateLimitEnv });
+    expect(deps).toMatchObject({ mode: 'production', provider: { name: 'mistral' } });
+    expect(deps?.rateLimiter).toBeDefined();
   });
 });

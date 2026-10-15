@@ -13,6 +13,7 @@ import type { LlmProvider } from '../core/llm/types';
 import { createPdfTextExtractor } from '../core/text-extraction/pdf';
 import { createDocumentTextExtractor, TextExtractionError } from '../core/text-extraction/router';
 import type { DocumentInput, TextExtractor } from '../core/text-extraction/types';
+import { createRateLimiter, type RateLimiter } from './rate-limit';
 
 /**
  * The extract-letter edge function, written against web-standard Request/Response so
@@ -30,6 +31,8 @@ export interface ServerDeps {
    * test letters. 'production': EU, no-training configuration, approved by the owner.
    */
   mode: 'dev-synthetic-only' | 'production';
+  /** Optional in dev mode, required in production (abuse and cost protection). */
+  rateLimiter?: RateLimiter;
 }
 
 export type Env = Record<string, string | undefined>;
@@ -47,12 +50,35 @@ export function depsFromEnv(env: Env): ServerDeps | null {
   const provider = providerFromEnv(env);
   if (!provider) return null;
 
+  const rateLimiter = rateLimiterFromEnv(env);
+  if (mode === 'production' && !rateLimiter) return null;
+
   return {
     provider,
     // OCR is added here once a provider is chosen; until then photos are rejected.
     textExtractor: createDocumentTextExtractor({ pdf: createPdfTextExtractor() }),
     mode,
+    rateLimiter: rateLimiter ?? undefined,
   };
+}
+
+function rateLimiterFromEnv(env: Env): RateLimiter | null {
+  // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are provided by Supabase; RATE_LIMIT_DB_KEY
+  // can hold a secret key (sb_secret_...) instead if legacy keys are disabled.
+  const dbKey = env.RATE_LIMIT_DB_KEY || env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!env.SUPABASE_URL || !dbKey || !env.RATE_LIMIT_SECRET) return null;
+  return createRateLimiter({
+    supabaseUrl: env.SUPABASE_URL,
+    dbKey,
+    hashSecret: env.RATE_LIMIT_SECRET,
+    perClientPerHour: positiveInt(env.RATE_LIMIT_PER_CLIENT_PER_HOUR, 10),
+    globalPerHour: positiveInt(env.RATE_LIMIT_GLOBAL_PER_HOUR, 200),
+  });
+}
+
+function positiveInt(value: string | undefined, fallback: number): number {
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
 }
 
 function providerFromEnv(env: Env): LlmProvider | null {
@@ -88,6 +114,7 @@ const CORS_HEADERS = {
 
 const STATUS: Record<ExtractErrorCode, number> = {
   invalid_request: 400,
+  rate_limited: 429,
   unreadable_document: 422,
   ocr_not_configured: 501,
   extraction_failed: 502,
@@ -121,6 +148,11 @@ export function createRequestHandler(getDeps: () => ServerDeps | null) {
     const parsed = extractRequestSchema.safeParse(body);
     if (!parsed.success) return fail('invalid_request');
     const { language, document } = parsed.data;
+
+    // Before any text extraction or LLM call, so rejected requests cost nothing.
+    if (deps.rateLimiter && !(await deps.rateLimiter.allow(request))) {
+      return fail('rate_limited');
+    }
 
     let letterText: string;
     let textMethod: 'text' | 'pdf-text-layer' | 'ocr';

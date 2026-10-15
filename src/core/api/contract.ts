@@ -30,6 +30,7 @@ export type ExtractRequest = z.infer<typeof extractRequestSchema>;
 
 export const extractErrorCodeSchema = z.enum([
   'invalid_request',
+  'rate_limited',
   'unreadable_document',
   'ocr_not_configured',
   'extraction_failed',

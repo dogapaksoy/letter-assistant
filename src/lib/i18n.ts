@@ -26,6 +26,8 @@ const tr = {
 
   'error.title': 'Bir sorun oluştu',
   'error.invalid_request': 'Dosya gönderilemedi. Lütfen tekrar dene.',
+  'error.rate_limited':
+    'Kısa sürede çok fazla mektup gönderildi. Lütfen bir saat sonra tekrar dene.',
   'error.unreadable_document': 'Mektupta okunabilir metin bulunamadı. Daha net bir fotoğraf dene.',
   'error.ocr_not_configured': 'Fotoğraf okuma henüz hazır değil. Şimdilik dijital bir PDF dene.',
   'error.extraction_failed': 'Mektup analiz edilemedi. Lütfen tekrar dene.',
@@ -117,6 +119,7 @@ const en: Record<StringKey, string> = {
 
   'error.title': 'Something went wrong',
   'error.invalid_request': 'The file could not be sent. Please try again.',
+  'error.rate_limited': 'Too many letters were sent in a short time. Please try again in an hour.',
   'error.unreadable_document': 'No readable text was found. Try a sharper photo.',
   'error.ocr_not_configured': 'Reading photos is not ready yet. For now, try a digital PDF.',
   'error.extraction_failed': 'The letter could not be analysed. Please try again.',

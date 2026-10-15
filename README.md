@@ -78,9 +78,12 @@ The function refuses requests until its data mode is set explicitly:
 - `DEV_MODE_SYNTHETIC_ONLY=true`: for development with a free-tier LLM that may train on inputs. The app shows a "test letters only" banner.
 - `LLM_APPROVED_FOR_PERSONAL_DATA=true`: only after choosing an EU, no-training LLM configuration (see `CLAUDE.md` privacy rules).
 
+### Rate limiting
+
+The function limits analyses per client and in total per hour (defaults: 10 per client, 200 overall; see `supabase/functions/.env.example`). Clients are identified by a keyed, daily-changing hash of their IP address; IPs are never stored. Required in production mode, optional in dev mode. Needs the `rate_limit` migration and a `RATE_LIMIT_SECRET`.
+
 ## Open decisions before real users
 
 - **OCR provider** for photos and scanned PDFs (until then the function answers `ocr_not_configured` for photos; digital PDFs work).
 - **EU, no-training LLM configuration** for personal data.
-- **Abuse protection** for the edge function (it is callable with the publishable key): per-user auth or rate limiting.
 - **Privacy policy** review: `docs/privacy-policy.md` is a draft.
