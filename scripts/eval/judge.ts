@@ -17,6 +17,8 @@ export interface JudgeMatch {
 /** A group of expected and predicted items that are matched only with each other. */
 export interface JudgeSection {
   name: string;
+  /** Section-specific matching rules, passed to the judge with the items. */
+  instructions?: string;
   expected: JudgeItem[];
   predicted: string[];
 }
@@ -38,7 +40,7 @@ const judgeOutputSchema = z.object({
 
 const SYSTEM = `You grade an information-extraction system against a hand-written answer key.
 
-You get one or more SECTIONS. Each section has EXPECTED items (from the answer key) and PREDICTED items (from the system). Match items only within the same section. For each expected item, decide which predicted item, if any, states the same thing. Wording and language may differ; the meaning must match: the same thing to do, and any amount, document, method or condition the expected item names. If nothing matches, use null.
+You get one or more SECTIONS. Each section has EXPECTED items (from the answer key) and PREDICTED items (from the system). Match items only within the same section, and follow a section's "instructions" when it has them. For each expected item, decide which predicted item, if any, states the same thing. Wording and language may differ; the meaning must match: the same thing to do, and any amount, document, method or condition the expected item names. If nothing matches, use null.
 
 One predicted item may match several expected items when it clearly covers each of them (for example "attend the appointment and bring these documents" covers both "attend the appointment" and "bring the documents").
 
@@ -66,6 +68,7 @@ export async function judgeSections(
       {
         sections: toJudge.map((s) => ({
           name: s.name,
+          ...(s.instructions && { instructions: s.instructions }),
           expected: s.expected,
           predicted: s.predicted.map((text, index) => ({ index, text })),
         })),

@@ -1,9 +1,10 @@
 // Runs the extraction pipeline on the eval set and scores it.
 // Usage: npm run eval -- [--provider gemini|mistral|anthropic] [--lang tr|en] [--only <case-id>]
+//                        [--rejudge <eval/results/....json>]  (judge only, reuses extractions)
 // API keys go in .env.eval (see .env.eval.example). SYNTHETIC letters only: real letters
 // are refused unless --allow-real-data is passed for an EU, no-training configuration.
 
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseArgs } from 'node:util';
 
@@ -40,10 +41,21 @@ const { values } = parseArgs({
     provider: { type: 'string' },
     lang: { type: 'string', default: 'en' },
     only: { type: 'string' },
+    rejudge: { type: 'string' },
     'allow-real-data': { type: 'boolean', default: false },
   },
 });
-const language = values.lang as OutputLanguage;
+// --rejudge <results.json>: reuse the extractions of an earlier run and only rerun the
+// judge, e.g. after changing the judge, without spending quota on extraction.
+const previous = values.rejudge
+  ? (JSON.parse(readFileSync(values.rejudge, 'utf8')) as {
+      language: OutputLanguage;
+      results: CaseResult[];
+    })
+  : null;
+const previousOutcomes = new Map(previous?.results.map((r) => [r.id, r.outcome]));
+
+const language = (previous?.language ?? values.lang) as OutputLanguage;
 if (language !== 'en' && language !== 'tr') {
   console.error('--lang must be "en" or "tr"');
   process.exit(1);
@@ -104,7 +116,9 @@ const provider = withPacing(PROVIDERS[providerName](), {
 });
 
 async function runCase(c: EvalCase): Promise<CaseResult> {
-  const outcome = await extractFromLetter({ provider, letterText: c.letterText, language });
+  const outcome =
+    previousOutcomes.get(c.truth.id) ??
+    (await extractFromLetter({ provider, letterText: c.letterText, language }));
   const result: CaseResult = { id: c.truth.id, synthetic: c.truth.synthetic, outcome };
   if (!outcome.ok) return result;
 
@@ -123,6 +137,8 @@ async function runCase(c: EvalCase): Promise<CaseResult> {
     const [relativeMatches = [], actionMatches = []] = await judgeSections(provider, [
       {
         name: 'relative_deadlines',
+        instructions:
+          'Match on the time-limit rule only (e.g. "within 14 days of receipt"). The text in brackets only says which deadline it is; amounts and other task details are judged in the actions section and are not required here.',
         expected: expectedRelative.map((d) => ({ id: d.id, text: relativeText(d) })),
         predicted: predictedRelative.map((d) => d.value),
       },
@@ -163,9 +179,9 @@ async function runCase(c: EvalCase): Promise<CaseResult> {
   return result;
 }
 
-/** Relative deadlines are judged on the rule the letter states, not just the task. */
+/** Relative deadlines are judged on the rule the letter states; the task is context. */
 function relativeText(d: { description: Record<OutputLanguage, string>; rule?: string }): string {
-  return d.rule ? `${d.description[language]} Rule: ${d.rule}` : d.description[language];
+  return d.rule ? `${d.rule} (${d.description[language]})` : d.description[language];
 }
 
 function sum(results: CaseResult[], pick: (r: CaseResult) => number | undefined): number {
@@ -225,7 +241,11 @@ function reviewMarkdown(results: CaseResult[]): string {
 }
 
 async function main() {
-  console.log(`Running ${cases.length} case(s), language=${language}, provider=${provider.name}\n`);
+  console.log(
+    `Running ${cases.length} case(s), language=${language}, provider=${provider.name}` +
+      (values.rejudge ? `, re-judging extractions from ${values.rejudge}` : '') +
+      '\n',
+  );
   const results: CaseResult[] = [];
   for (const c of cases) {
     process.stdout.write(`- ${c.truth.id} ... `);
@@ -309,7 +329,11 @@ async function main() {
   const models = [...new Set(ok.map((r) => (r.outcome.ok ? r.outcome.model : '')))];
   writeFileSync(
     join(outDir, `${stamp}.json`),
-    JSON.stringify({ language, promptVersion, models, results }, null, 2),
+    JSON.stringify(
+      { language, promptVersion, models, rejudgedFrom: values.rejudge ?? null, results },
+      null,
+      2,
+    ),
   );
   writeFileSync(join(outDir, `${stamp}-judge-review.md`), reviewMarkdown(results));
   console.log(`\nModel(s): ${models.join(', ')} | prompt: ${promptVersion}`);

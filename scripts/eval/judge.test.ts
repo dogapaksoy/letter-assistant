@@ -45,6 +45,20 @@ describe('judgeSections', () => {
     expect(relativeMatches).toEqual([{ expectedId: 'd2', predictedIndex: 0, reason: 'same' }]);
   });
 
+  it('passes section instructions to the judge', async () => {
+    const provider = createFakeProvider([
+      JSON.stringify({
+        sections: [
+          { name: 'relative', matches: [{ expected_id: 'd2', predicted_index: 0, reason: 'r' }] },
+        ],
+      }),
+    ]);
+    await judgeSections(provider, [{ ...relative, instructions: 'Match on the rule only.' }]);
+    expect(JSON.parse(provider.requests[0]!.user)).toMatchObject({
+      sections: [{ name: 'relative', instructions: 'Match on the rule only.' }],
+    });
+  });
+
   it('drops out-of-range indices and fills in missing entries', async () => {
     const provider = createFakeProvider([
       JSON.stringify({
