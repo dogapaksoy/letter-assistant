@@ -37,6 +37,10 @@ Deadline `kind` values:
 
 Every `source_quote` must appear **verbatim** in the letter body (after front matter is stripped). The eval runner should check this before scoring.
 
+## OCR robustness (no LLM calls)
+
+`npm run eval:ocr` adds deterministic OCR-style errors (character confusions such as `O`/`0` and `l`/`1`, lost umlauts, words split at line breaks, spacing) to the synthetic letters at three levels and verifies every ground-truth quote, plus short date and amount quotes, against the noisy text. It also checks that quotes with one digit changed are always rejected. Run it after any change to normalization or matching.
+
 ## Comparing runs
 
 Only compare runs whose results report the same model (`models` in the results JSON, printed at the end of each run). Model aliases can move silently: requests for `gemini-3.5-flash` were answered by `gemini-3.5-flash` until 2026-10-09 and by `gemini-3.6-flash` on 2026-10-11. For a prompt change, run the old and the new prompt on the same day, with the same model and language.

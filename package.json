@@ -71,7 +71,8 @@
     "functions:build": "node scripts/build-function.mjs",
     "functions:check": "npm run -s functions:build && npx -y deno@2 check supabase/functions/extract-letter/index.ts",
     "functions:dev": "npm run -s functions:build && npx -y deno@2 run --allow-net --allow-env --allow-read --allow-sys --env-file=supabase/functions/.env supabase/functions/extract-letter/index.ts",
-    "functions:deploy": "npm run -s functions:build && npx -y supabase functions deploy extract-letter --use-api"
+    "functions:deploy": "npm run -s functions:build && npx -y supabase functions deploy extract-letter --use-api",
+    "eval:ocr": "node --import tsx scripts/eval/ocr-robustness.ts"
   },
   "private": true
 }

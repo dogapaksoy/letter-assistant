@@ -106,4 +106,16 @@ describe('verifyQuote', () => {
       reason: 'not_found',
     });
   });
+
+  it('verifies a correct quote when OCR turned digits into look-alike letters', () => {
+    const ocr = normalizeForMatching(
+      'Bitte zahlen Sie den Betrag von 4l2,OO Euro spätestens am 26.1O.2O26.',
+    );
+    expect(
+      verifyQuote('Bitte zahlen Sie den Betrag von 412,00 Euro spätestens am 26.10.2026.', ocr),
+    ).toMatchObject({ status: 'verified', match: { exact: true } });
+    expect(
+      verifyQuote('Bitte zahlen Sie den Betrag von 412,00 Euro spätestens am 26.10.2027.', ocr),
+    ).toEqual({ status: 'unverified', reason: 'digits_differ' });
+  });
 });

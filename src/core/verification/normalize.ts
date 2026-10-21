@@ -62,7 +62,22 @@ export function normalizeForMatching(input: string): NormalizedText {
     sourceIndex.pop();
   }
 
-  return { text, sourceIndex };
+  return { text: foldDigitLookalikes(text), sourceIndex };
+}
+
+const DIGIT_LOOKALIKES: Record<string, string> = { o: '0', l: '1', i: '1', s: '5' };
+
+/**
+ * OCR often reads digits as similar letters ("20.1O.2026", "4l2,OO"). In a number-like run
+ * of digits, look-alike letters and separators that contains at least one real digit, the
+ * look-alikes become digits; runs without a digit (words like "so", "is") are untouched.
+ * Real digits are never changed, so a quote with a different digit still fails the digit
+ * check. One character in, one out, so source offsets stay valid.
+ */
+function foldDigitLookalikes(text: string): string {
+  return text.replace(/[0-9oils.,]+/g, (run) =>
+    /[0-9]/.test(run) ? run.replace(/[oils]/g, (ch) => DIGIT_LOOKALIKES[ch] ?? ch) : run,
+  );
 }
 
 /** If a line break follows `from` (optionally surrounded by spaces), returns the index after it. */

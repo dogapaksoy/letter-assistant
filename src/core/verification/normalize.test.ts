@@ -43,4 +43,12 @@ describe('normalizeForMatching', () => {
   it('returns empty text for whitespace-only input', () => {
     expect(normalizeForMatching(' \n\t ')).toEqual({ text: '', sourceIndex: [] });
   });
+
+  it('turns OCR digit look-alikes into digits only next to a digit', () => {
+    expect(norm('bis zum 20.1O.2026')).toBe('bis zum 20.10.2026');
+    expect(norm('Betrag l2,5O Euro')).toBe('betrag 12,50 euro');
+    expect(norm('Raum 0.O8')).toBe('raum 0.08');
+    // Letters inside words stay letters, even near numbers separated by a space.
+    expect(norm('Konto Lindenallee 21 als 5 Monate')).toBe('konto lindenallee 21 als 5 monate');
+  });
 });
