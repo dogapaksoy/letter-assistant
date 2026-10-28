@@ -10,6 +10,7 @@ const success = {
   ok: true,
   letterText: 'Brief',
   textMethod: 'text',
+  spans: [],
   extraction: { summary: [], deadlines: [], actions: [] },
   dropped: { summary: 0, deadlines: 0, actions: 0 },
   model: 'm',

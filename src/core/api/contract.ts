@@ -61,6 +61,17 @@ export const extractSuccessSchema = z.object({
   /** The text the LLM saw and quotes were verified against. Kept in memory only. */
   letterText: z.string(),
   textMethod: z.enum(['text', 'pdf-text-layer', 'ocr']),
+  /** Word positions from OCR (empty otherwise), for highlighting a quote on the photo. */
+  spans: z
+    .array(
+      z.object({
+        start: z.number().int().nonnegative(),
+        end: z.number().int().nonnegative(),
+        page: z.number().int().nonnegative(),
+        box: z.object({ x: z.number(), y: z.number(), width: z.number(), height: z.number() }),
+      }),
+    )
+    .default([]),
   extraction: z.object({
     summary: z.array(summaryPointSchema.extend({ verification: verificationSchema })),
     // deadlineSchema has a refinement, so extend its shape rather than the refined schema.

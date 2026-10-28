@@ -3,6 +3,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import {
   type ExtractErrorCode,
   type ExtractResponse,
+  type ExtractSuccess,
   extractRequestSchema,
 } from '../core/api/contract';
 import { extractFromLetter } from '../core/extraction/pipeline';
@@ -10,6 +11,7 @@ import { createAnthropicProvider } from '../core/llm/anthropic';
 import { createGeminiProvider } from '../core/llm/gemini';
 import { createMistralProvider } from '../core/llm/mistral';
 import type { LlmProvider } from '../core/llm/types';
+import { createAzureOcrExtractor } from '../core/text-extraction/azure';
 import { createPdfTextExtractor } from '../core/text-extraction/pdf';
 import { createDocumentTextExtractor, TextExtractionError } from '../core/text-extraction/router';
 import type { DocumentInput, TextExtractor } from '../core/text-extraction/types';
@@ -55,11 +57,21 @@ export function depsFromEnv(env: Env): ServerDeps | null {
 
   return {
     provider,
-    // OCR is added here once a provider is chosen; until then photos are rejected.
-    textExtractor: createDocumentTextExtractor({ pdf: createPdfTextExtractor() }),
+    textExtractor: createDocumentTextExtractor({
+      pdf: createPdfTextExtractor(),
+      ocr: ocrFromEnv(env),
+    }),
     mode,
     rateLimiter: rateLimiter ?? undefined,
   };
+}
+
+/** OCR for photos and scanned PDFs; without it those requests get ocr_not_configured. */
+function ocrFromEnv(env: Env): TextExtractor | undefined {
+  if (env.OCR_PROVIDER === 'azure' && env.AZURE_DI_ENDPOINT && env.AZURE_DI_KEY) {
+    return createAzureOcrExtractor({ endpoint: env.AZURE_DI_ENDPOINT, key: env.AZURE_DI_KEY });
+  }
+  return undefined;
 }
 
 function rateLimiterFromEnv(env: Env): RateLimiter | null {
@@ -156,6 +168,7 @@ export function createRequestHandler(getDeps: () => ServerDeps | null) {
 
     let letterText: string;
     let textMethod: 'text' | 'pdf-text-layer' | 'ocr';
+    let spans: ExtractSuccess['spans'] = [];
     if (document.kind === 'text') {
       letterText = document.text;
       textMethod = 'text';
@@ -173,9 +186,13 @@ export function createRequestHandler(getDeps: () => ServerDeps | null) {
         const extracted = await deps.textExtractor.extract(input);
         letterText = extracted.text;
         textMethod = extracted.method;
+        spans = extracted.spans.map(({ start, end, page, box }) => ({ start, end, page, box }));
       } catch (error) {
         if (error instanceof TextExtractionError && error.kind === 'ocr_not_configured') {
           return fail('ocr_not_configured');
+        }
+        if (error instanceof TextExtractionError && error.kind === 'unavailable') {
+          return fail('service_unavailable');
         }
         return fail('unreadable_document');
       }
@@ -191,6 +208,7 @@ export function createRequestHandler(getDeps: () => ServerDeps | null) {
       ok: true,
       letterText,
       textMethod,
+      spans,
       extraction: outcome.extraction,
       dropped: outcome.dropped,
       model: outcome.model,

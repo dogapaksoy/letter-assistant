@@ -22,6 +22,7 @@ const result: ExtractSuccess = {
   ok: true,
   letterText: LETTER,
   textMethod: 'text',
+  spans: [],
   extraction: {
     summary: [
       {

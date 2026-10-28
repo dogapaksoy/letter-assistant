@@ -5,7 +5,8 @@ export const MIN_TEXT_LAYER_CHARS = 50;
 
 export class TextExtractionError extends Error {
   constructor(
-    readonly kind: 'ocr_not_configured' | 'unreadable',
+    /** 'unavailable': the OCR service failed or timed out (temporary, not the document's fault). */
+    readonly kind: 'ocr_not_configured' | 'unreadable' | 'unavailable',
     message: string,
   ) {
     super(message);
@@ -21,11 +22,15 @@ export function createDocumentTextExtractor(sources: {
   pdf: TextExtractor;
   ocr?: TextExtractor;
 }): TextExtractor {
-  const ocrOrFail = (input: DocumentInput): Promise<ExtractedText> => {
+  const ocrOrFail = async (input: DocumentInput): Promise<ExtractedText> => {
     if (!sources.ocr) {
       throw new TextExtractionError('ocr_not_configured', 'No OCR provider is configured');
     }
-    return sources.ocr.extract(input);
+    try {
+      return await sources.ocr.extract(input);
+    } catch {
+      throw new TextExtractionError('unavailable', 'The OCR service is unavailable');
+    }
   };
 
   return {

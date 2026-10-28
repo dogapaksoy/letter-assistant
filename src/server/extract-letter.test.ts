@@ -75,6 +75,55 @@ describe('extract-letter handler', () => {
     expect(provider.requests[0]?.user).toContain(LETTER);
   });
 
+  it('returns OCR word boxes for photos so the app can highlight on the image', async () => {
+    const box = { x: 0.5, y: 0.1, width: 0.3, height: 0.03 };
+    const ocr: TextExtractor = {
+      name: 'ocr',
+      async extract() {
+        return {
+          text: LETTER,
+          method: 'ocr',
+          provider: 'stub',
+          pageCount: 1,
+          spans: [{ start: 44, end: 68, page: 0, box, confidence: 0.9 }],
+        };
+      },
+    };
+    const { handle } = handler({ textExtractor: ocr });
+    const body = await read(
+      await handle(
+        post({
+          language: 'tr',
+          document: { kind: 'image', base64: btoa('jpeg'), mimeType: 'image/jpeg' },
+        }),
+      ),
+    );
+    expect(body).toMatchObject({
+      ok: true,
+      textMethod: 'ocr',
+      spans: [{ start: 44, end: 68, page: 0, box }],
+    });
+  });
+
+  it('reports service_unavailable when the OCR service fails', async () => {
+    const down: TextExtractor = {
+      name: 'down',
+      async extract() {
+        throw new TextExtractionError('unavailable', 'timeout');
+      },
+    };
+    const { handle, provider } = handler({ textExtractor: down });
+    const response = await handle(
+      post({
+        language: 'tr',
+        document: { kind: 'image', base64: btoa('jpeg'), mimeType: 'image/jpeg' },
+      }),
+    );
+    expect(response.status).toBe(503);
+    expect(await read(response)).toEqual({ ok: false, error: 'service_unavailable' });
+    expect(provider.requests).toHaveLength(0);
+  });
+
   it('uses the text extractor for PDFs', async () => {
     const pdfExtractor: TextExtractor = {
       name: 'stub',
