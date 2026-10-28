@@ -143,6 +143,31 @@ describe('SourceView', () => {
     expect(screen.getAllByText('spätestens am 26.10.2026').length).toBeGreaterThan(0);
   });
 
+  it('marks the passage on the photo when OCR word boxes are available', () => {
+    const spans = [
+      { start: 44, end: 54, page: 0, box: { x: 0.1, y: 0.5, width: 0.2, height: 0.02 } },
+      { start: 55, end: 57, page: 0, box: { x: 0.32, y: 0.5, width: 0.05, height: 0.02 } },
+      { start: 0, end: 5, page: 0, box: { x: 0.1, y: 0.1, width: 0.1, height: 0.02 } },
+    ];
+    render(
+      <SourceView
+        letterText={LETTER}
+        value="Pay."
+        verification={verified(44, 68)}
+        t={t}
+        image="data:image/jpeg;base64,AAAA"
+        spans={spans}
+      />,
+    );
+    expect(screen.getByLabelText(/Photo of the letter/)).toBeOnTheScreen();
+    expect(screen.getAllByTestId('highlight-box')).toHaveLength(2);
+  });
+
+  it('shows no photo for pasted text or PDFs', () => {
+    render(<SourceView letterText={LETTER} value="Pay." verification={verified(44, 68)} t={t} />);
+    expect(screen.queryByLabelText(/Photo of the letter/)).toBeNull();
+  });
+
   it('warns when the passage was not found', () => {
     render(<SourceView letterText={LETTER} value="Pay." verification={unverified} t={t} />);
     expect(screen.getByText(/We could not find matching text/)).toBeOnTheScreen();

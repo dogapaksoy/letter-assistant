@@ -17,6 +17,8 @@ export default function Source() {
       {state.status === 'done' && item ? (
         <SourceView
           letterText={state.result.letterText}
+          image={state.image}
+          spans={state.result.spans}
           value={item.value}
           verification={item.verification}
           t={t}

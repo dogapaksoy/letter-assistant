@@ -1,6 +1,7 @@
 import { buildCalendarEvent } from './calendar';
 import { buildCorrectionReport, submitCorrectionReport } from './corrections';
 import { daysUntil, formatDate } from './format';
+import { boxesForRange } from './highlight';
 import { translate } from './i18n';
 import { toDocument } from './pick-document';
 
@@ -152,5 +153,25 @@ describe('toDocument', () => {
     expect(toDocument({ base64: 'a'.repeat(10_000_001), mimeType: 'image/png' })).toEqual({
       status: 'too_large',
     });
+  });
+});
+
+describe('boxesForRange', () => {
+  const box = (x: number) => ({ x, y: 0.1, width: 0.05, height: 0.02 });
+  const spans = [
+    { start: 0, end: 5, page: 0, box: box(0.1) },
+    { start: 6, end: 12, page: 0, box: box(0.2) },
+    { start: 13, end: 20, page: 0, box: box(0.3) },
+    { start: 6, end: 12, page: 1, box: box(0.9) },
+  ];
+
+  it('returns the boxes of words overlapping the range on the page', () => {
+    expect(boxesForRange(spans, 6, 15)).toEqual([box(0.2), box(0.3)]);
+    expect(boxesForRange(spans, 6, 12, 1)).toEqual([box(0.9)]);
+  });
+
+  it('returns nothing outside the words or without spans', () => {
+    expect(boxesForRange(spans, 5, 6)).toEqual([]);
+    expect(boxesForRange([], 0, 100)).toEqual([]);
   });
 });

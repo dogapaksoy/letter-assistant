@@ -31,6 +31,8 @@ export type AnalysisState =
       result: ExtractSuccess;
       language: OutputLanguage;
       corrections: Record<string, LocalCorrection>;
+      /** The photo as a data URI, to mark sources on it. Memory only, like everything here. */
+      image?: string;
     };
 
 interface Analysis {
@@ -63,9 +65,13 @@ export function AnalysisProvider({
       setState({ status: 'loading' });
       const response = await extract({ language, document });
       if (id !== current.current) return;
+      const image =
+        document.kind === 'image'
+          ? `data:${document.mimeType};base64,${document.base64}`
+          : undefined;
       setState(
         response.ok
-          ? { status: 'done', result: response.data, language, corrections: {} }
+          ? { status: 'done', result: response.data, language, corrections: {}, image }
           : { status: 'error', error: response.error },
       );
     },

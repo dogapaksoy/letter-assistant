@@ -8,7 +8,7 @@ The app is a comprehension aid, **not legal advice**.
 
 ```
 app (Expo)  ──POST──▶  extract-letter (Supabase Edge Function, Frankfurt)
-                         1. text: PDF text layer (unpdf) or OCR (provider not chosen yet)
+                         1. text: PDF text layer (unpdf) or OCR (Azure AI Document Intelligence)
                          2. LLM (adapter: Gemini / Mistral / Anthropic) returns JSON
                          3. Zod validation, item by item
                          4. code checks every source_quote against the text
@@ -84,6 +84,6 @@ The function limits analyses per client and in total per hour (defaults: 10 per 
 
 ## Open decisions before real users
 
-- **OCR provider** for photos and scanned PDFs (until then the function answers `ocr_not_configured` for photos; digital PDFs work).
+- **OCR resource:** create an Azure AI Document Intelligence resource in an EU region and set `OCR_PROVIDER=azure`, `AZURE_DI_ENDPOINT`, `AZURE_DI_KEY` (see `supabase/functions/.env.example`). Until then photos get `ocr_not_configured`; digital PDFs work.
 - **EU, no-training LLM configuration** for personal data.
 - **Privacy policy** review: `docs/privacy-policy.md` is a draft.

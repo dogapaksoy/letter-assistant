@@ -73,6 +73,7 @@ const tr = {
   'source.notFound':
     'Bu madde için mektupta karşılık gelen metin bulunamadı. Bu bilgiye güvenmeden önce orijinal mektubu kontrol et.',
   'source.highlightLabel': 'İşaretli metin: {text}',
+  'source.photoLabel': 'Mektubun fotoğrafı; ilgili yer sarıyla işaretli.',
 
   'report.title': 'Ne yanlış?',
   'report.intro':
@@ -164,6 +165,7 @@ const en: Record<StringKey, string> = {
   'source.notFound':
     'We could not find matching text in the letter for this item. Check the original letter before relying on it.',
   'source.highlightLabel': 'Highlighted text: {text}',
+  'source.photoLabel': 'Photo of the letter; the matching passage is marked in yellow.',
 
   'report.title': 'What is wrong?',
   'report.intro':

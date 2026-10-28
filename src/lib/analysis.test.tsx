@@ -45,6 +45,17 @@ describe('AnalysisProvider', () => {
     expect(result.current.state).toEqual({ status: 'idle' });
   });
 
+  it('keeps the photo in memory for marking sources, but not for text', async () => {
+    const { result } = setup(async () => ({ ok: true, data: success }));
+    await act(() =>
+      result.current.analyze({ kind: 'image', base64: 'AAAA', mimeType: 'image/jpeg' }, 'tr'),
+    );
+    expect(result.current.state).toMatchObject({ image: 'data:image/jpeg;base64,AAAA' });
+
+    await act(() => result.current.analyze({ kind: 'text', text: 'Brief' }, 'tr'));
+    expect(result.current.state).toMatchObject({ status: 'done', image: undefined });
+  });
+
   it('reports errors', async () => {
     const { result } = setup(async () => ({ ok: false, error: 'network' }));
     await act(() => result.current.analyze({ kind: 'text', text: 'x' }, 'en'));
