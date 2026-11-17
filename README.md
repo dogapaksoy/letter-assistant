@@ -4,6 +4,45 @@ A mobile app that helps immigrants and international students in Germany underst
 
 The app is a comprehension aid, **not legal advice**.
 
+## Status
+
+**Prototype, not released.** The MVP code is complete and runs end to end, but only with synthetic test letters. It is not ready for real letters yet (see [Missing before real users](#missing-before-real-users)).
+
+### What works
+
+- Upload a photo (camera or library) or a PDF.
+- Summary, deadlines and an action checklist, in Turkish or English.
+- Every item links to its source passage: highlighted in the letter text, and on the photo when OCR word positions are available.
+- Code (not the LLM) checks every quote against the letter text, tolerating OCR noise. Unverified and low-confidence items are shown with a plain-language warning.
+- Users can report a wrong item. Reports are anonymous and contain no letter content.
+- Add a deadline to the device calendar, with reminders.
+- Backend: a Supabase Edge Function in Frankfurt, with rate limiting and an explicit data mode (synthetic-only vs. approved for personal data).
+- CI on every PR: lint, formatting, type checks, Jest and node tests, and a Deno check of the edge function.
+
+### Measured quality
+
+From the eval set in `eval/` (2026-10-20, prompt `extraction-v4`, model `gemini-3.6-flash`, Turkish output, 5 synthetic letters):
+
+| Check                                 | Result                    |
+| ------------------------------------- | ------------------------- |
+| Deadlines with a date                 | 8/8 found, no wrong dates |
+| Source quotes verified                | 48/48                     |
+| Relative deadlines ("within 14 days") | 3/3 (4 letters judged)    |
+| Required actions                      | 10/10 (4 letters judged)  |
+
+These letters are synthetic and clean text. Accuracy on real letters, on OCR output from photos and for English output has **not** been measured yet.
+
+### Missing before real users
+
+- **OCR for photos:** needs an Azure AI Document Intelligence resource in an EU region (`OCR_PROVIDER=azure`, `AZURE_DI_ENDPOINT`, `AZURE_DI_KEY`; see `supabase/functions/.env.example`). Until then photos and scanned PDFs return `ocr_not_configured`; PDFs with a text layer work. The adapter is unit-tested but has not run against a real resource.
+- **Multi-page letters on the free OCR tier:** Azure's free tier (F0) analyzes only the first two pages of a request. The app does not warn about this yet, so a deadline on page 3 could be missed silently.
+- **An EU, no-training LLM configuration:** the backend currently runs with a free-tier LLM in synthetic-only mode. Real letters must not be processed until this is in place and `LLM_APPROVED_FOR_PERSONAL_DATA=true` is set.
+- **Privacy policy:** `docs/privacy-policy.md` is a draft and needs a legal review.
+- **Real test letters:** anonymized real letters with ground truth, to measure accuracy beyond synthetic examples.
+- **Store release:** EAS build profiles and app identifiers are ready; Apple Developer and Google Play accounts are not set up.
+
+Not planned for the MVP: drafting replies, chat or follow-up questions, payments, more than two output languages, sharing features.
+
 ## How it works
 
 ```
@@ -76,14 +115,8 @@ npm run functions:deploy
 The function refuses requests until its data mode is set explicitly:
 
 - `DEV_MODE_SYNTHETIC_ONLY=true`: for development with a free-tier LLM that may train on inputs. The app shows a "test letters only" banner.
-- `LLM_APPROVED_FOR_PERSONAL_DATA=true`: only after choosing an EU, no-training LLM configuration (see `CLAUDE.md` privacy rules).
+- `LLM_APPROVED_FOR_PERSONAL_DATA=true`: only after choosing an LLM configuration that processes data in the EU and does not train on submitted letters.
 
 ### Rate limiting
 
 The function limits analyses per client and in total per hour (defaults: 10 per client, 200 overall; see `supabase/functions/.env.example`). Clients are identified by a keyed, daily-changing hash of their IP address; IPs are never stored. Required in production mode, optional in dev mode. Needs the `rate_limit` migration and a `RATE_LIMIT_SECRET`.
-
-## Open decisions before real users
-
-- **OCR resource:** create an Azure AI Document Intelligence resource in an EU region and set `OCR_PROVIDER=azure`, `AZURE_DI_ENDPOINT`, `AZURE_DI_KEY` (see `supabase/functions/.env.example`). Until then photos get `ocr_not_configured`; digital PDFs work.
-- **EU, no-training LLM configuration** for personal data.
-- **Privacy policy** review: `docs/privacy-policy.md` is a draft.
